@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "474689839485",
+    "project_id": "organic-bafae",
+    "storage_bucket": "organic-bafae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474689839485:android:4f4b40bf9efa3633536c14",
+        "android_client_info": {
+          "package_name": "com.ecommerce.appecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474689839485-0v8oigmiboihskik3ts9a2je70n6f15s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDbgZYqfHfBjLXZNnnlcJ0j6TuFAvd2wI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474689839485-0v8oigmiboihskik3ts9a2je70n6f15s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474689839485:android:57dcfb72656f1627536c14",
+        "android_client_info": {
+          "package_name": "com.ecommerce.organic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474689839485-0v8oigmiboihskik3ts9a2je70n6f15s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDbgZYqfHfBjLXZNnnlcJ0j6TuFAvd2wI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474689839485-0v8oigmiboihskik3ts9a2je70n6f15s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
