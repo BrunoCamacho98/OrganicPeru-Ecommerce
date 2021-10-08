@@ -49,11 +49,11 @@ class PrincipalState extends State<Principal> {
         children: <Widget>[
           const UserAccountsDrawerHeader(
             accountName: Text('Elver Galarga'),
-            accountEmail: Text('pedro.galarza@gmail.com'),
+            accountEmail: Text('elver.galarga@gmail.com'),
             currentAccountPicture: CircleAvatar(
               backgroundColor: kBackgroundColor,
               child: Text(
-                'P',
+                'E',
                 style: TextStyle(fontSize: 40.0),
               ),
             ),
