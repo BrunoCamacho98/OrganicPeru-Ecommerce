@@ -15,6 +15,7 @@ class PrincipalState extends State<Principal> {
   int _selectDrawerItem = -1;
 
   _getDrawerItemWidget(int pos) {
+    Navigator.of(context).pop();
     switch (pos) {
       case -1:
         return Body();
@@ -62,7 +63,6 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.home),
               selected: (-1 == _selectDrawerItem),
               onTap: () {
-                Navigator.of(context).pop();
                 _onSelectItem(-1);
               }),
           ListTile(
@@ -70,7 +70,6 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.production_quantity_limits_rounded),
               selected: (0 == _selectDrawerItem),
               onTap: () {
-                Navigator.of(context).pop();
                 _onSelectItem(0);
               }),
           ListTile(
@@ -78,7 +77,6 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.add),
               selected: (1 == _selectDrawerItem),
               onTap: () {
-                Navigator.of(context).pop();
                 _onSelectItem(1);
               }),
           const Divider(),
