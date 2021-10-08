@@ -60,14 +60,17 @@ class ErrorWidget extends StatelessWidget {
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: SafeArea(
-      child: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Center(
-          child: CircularProgressIndicator(),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 }
