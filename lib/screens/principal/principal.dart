@@ -48,7 +48,7 @@ class PrincipalState extends State<Principal> {
       child: ListView(
         children: <Widget>[
           const UserAccountsDrawerHeader(
-            accountName: Text('Pedro Galarza'),
+            accountName: Text('Elver Galarga'),
             accountEmail: Text('pedro.galarza@gmail.com'),
             currentAccountPicture: CircleAvatar(
               backgroundColor: kBackgroundColor,
