@@ -15,7 +15,6 @@ class PrincipalState extends State<Principal> {
   int _selectDrawerItem = -1;
 
   _getDrawerItemWidget(int pos) {
-    Navigator.of(context).pop();
     switch (pos) {
       case -1:
         return Body();
@@ -29,6 +28,7 @@ class PrincipalState extends State<Principal> {
   }
 
   _onSelectItem(int pos) {
+    Navigator.of(context).pop();
     setState(() {
       _selectDrawerItem = pos;
     });
@@ -102,10 +102,6 @@ class PrincipalState extends State<Principal> {
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset("assets/icons/menu.svg"),
-        onPressed: () {},
-      ),
     );
   }
 }
