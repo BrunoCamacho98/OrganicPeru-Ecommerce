@@ -1,11 +1,15 @@
 // Firebase
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/screens/public/Authentication/authentifcation.dart';
 import 'package:organic/screens/public/login.dart';
+import 'package:organic/services/authentification/auth_services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,16 +31,24 @@ class MyApp extends StatelessWidget {
           if (snapshot.hasError) {
             return ErrorWidget();
           } else if (snapshot.hasData) {
-            return MaterialApp(
-              theme: ThemeData(
-                primarySwatch: kprimarySwatch,
-                primaryColor: kPrimaryColor,
-                textTheme:
-                    Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider<AuthServices>.value(
+                    value: AuthServices()),
+                StreamProvider<User?>.value(
+                    value: AuthServices().user, initialData: null)
+              ],
+              child: MaterialApp(
+                theme: ThemeData(
+                  primarySwatch: kprimarySwatch,
+                  primaryColor: kPrimaryColor,
+                  textTheme:
+                      Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                debugShowCheckedModeBanner: false,
+                home: Authentication(),
               ),
-              debugShowCheckedModeBanner: false,
-              home: Login(),
             );
           } else {
             return Loading();

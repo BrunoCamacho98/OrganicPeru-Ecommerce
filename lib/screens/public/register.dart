@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
-import 'package:organic/methods/global_methods.dart';
+import 'package:organic/services/authentification/auth_services.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
+  final Function toggleScreen;
+
+  const Register({Key? key, required this.toggleScreen}) : super(key: key);
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -29,6 +33,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<AuthServices>(context);
     return Scaffold(
         body: SafeArea(
       child: Padding(
@@ -77,28 +82,33 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 30),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (_formkey.currentState!.validate()) {
+                    await loginProvider.register(_emailController.text.trim(),
+                        _passwordController.text.trim());
+                  }
+                },
                 height: 55,
-                minWidth: double.infinity,
+                minWidth: loginProvider.isLoading ? null : double.infinity,
                 color: kPrimaryColor,
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 0,
-                child: const Text(
-                  "Registrar",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                child: loginProvider.isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        "Registrar",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
               ),
               const SizedBox(height: 15),
               MaterialButton(
-                onPressed: () {
-                  toLogin(context);
-                },
+                onPressed: () => widget.toggleScreen(),
                 height: 55,
                 minWidth: double.infinity,
                 color: Colors.white,

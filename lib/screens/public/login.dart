@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/methods/global_methods.dart';
+import 'package:organic/services/authentification/auth_services.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
+  final Function toggleScreen;
+
+  const Login({Key? key, required this.toggleScreen}) : super(key: key);
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -26,6 +32,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<AuthServices>(context);
     return Scaffold(
         body: SafeArea(
       child: Padding(
@@ -64,7 +71,11 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 30),
               MaterialButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (_formkey.currentState!.validate()) {
+                    await loginProvider.login(_emailController.text.trim(),
+                        _passwordController.text.trim());
+                  }
                   toPrincipal(context);
                 },
                 height: 55,
@@ -75,19 +86,19 @@ class _LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 0,
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                child: loginProvider.isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
               ),
               const SizedBox(height: 15),
               MaterialButton(
-                onPressed: () {
-                  toRegister(context);
-                },
+                onPressed: () => widget.toggleScreen(),
                 height: 55,
                 minWidth: double.infinity,
                 color: Colors.white,

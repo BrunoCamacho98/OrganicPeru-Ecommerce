@@ -5,6 +5,8 @@ import 'package:organic/constants/theme.dart';
 // Screeen
 import 'package:organic/screens/principal/components/body.dart';
 import 'package:organic/screens/principal/product/create_product.dart';
+import 'package:organic/screens/principal/product/list_product.dart';
+import 'package:organic/screens/public/Authentication/authentifcation.dart';
 import 'package:organic/screens/public/login.dart';
 
 class Principal extends StatefulWidget {
@@ -22,8 +24,10 @@ class PrincipalState extends State<Principal> {
         return CreateProduct();
       case 1:
         return CreateProduct();
+      case 4:
+        return const ListProduct();
       case 5:
-        return Login();
+        return Authentication();
     }
   }
 
@@ -40,6 +44,12 @@ class PrincipalState extends State<Principal> {
       appBar: buildAppBar(),
       body: _getDrawerItemWidget(_selectDrawerItem),
       drawer: buildDrawerApp(context),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      elevation: 0,
     );
   }
 
@@ -68,9 +78,9 @@ class PrincipalState extends State<Principal> {
           ListTile(
               title: const Text('Mis productos'),
               leading: const Icon(Icons.production_quantity_limits_rounded),
-              selected: (0 == _selectDrawerItem),
+              selected: (4 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(0);
+                _onSelectItem(4);
               }),
           ListTile(
               title: const Text('Crear producto'),
@@ -96,12 +106,6 @@ class PrincipalState extends State<Principal> {
               })
         ],
       ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      elevation: 0,
     );
   }
 }
