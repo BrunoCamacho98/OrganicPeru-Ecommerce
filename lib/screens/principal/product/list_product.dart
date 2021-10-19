@@ -1,10 +1,51 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
-class ListProduct extends StatelessWidget {
-  ListProduct({this.products});
+class ListProduct extends StatefulWidget {
+  final User? user;
 
-  final List? products;
+  ListProduct({this.user});
+
+  @override
+  _ListProductState createState() => _ListProductState(user: user);
+}
+
+class _ListProductState extends State<ListProduct> {
+  _ListProductState({this.user});
+
+  final User? user;
+
+  List products = [];
+
+  CollectionReference productReference =
+      FirebaseFirestore.instance.collection('Product');
+
+  @override
+  void initState() {
+    super.initState();
+    getProducts().then((value) {
+      setState(() {
+        products = value;
+      });
+    });
+  }
+
+  Future<List> getProducts() async {
+    QuerySnapshot products =
+        await productReference.where('userId', isEqualTo: user?.uid).get();
+
+    List productList = [];
+
+    if (products.docs.length != 0) {
+      for (var doc in products.docs) {
+        productList.add(doc.get('name'));
+      }
+    }
+
+    return productList;
+  }
 
   @override
   Widget build(BuildContext context) {
