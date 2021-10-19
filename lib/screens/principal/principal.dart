@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,9 +23,35 @@ class Principal extends StatefulWidget {
 class PrincipalState extends State<Principal> {
   PrincipalState({this.user});
 
+  CollectionReference productReference =
+      FirebaseFirestore.instance.collection('Product');
+
+  List products = [];
+
   final User? user;
 
   int _selectDrawerItem = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    getProducts().then((value) => products = value);
+  }
+
+  Future<List> getProducts() async {
+    QuerySnapshot products =
+        await productReference.where('userId', isEqualTo: user?.uid).get();
+
+    List productList = [];
+
+    if (products.docs.length != 0) {
+      for (var doc in products.docs) {
+        productList.add(doc.get('name'));
+      }
+    }
+
+    return productList;
+  }
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -35,7 +62,7 @@ class PrincipalState extends State<Principal> {
       case 1:
         return CreateProduct(user: user);
       case 4:
-        return ListProduct(user: user);
+        return ListProduct(products: products);
       case 5:
         return Authentication();
     }

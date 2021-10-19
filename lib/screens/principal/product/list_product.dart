@@ -1,30 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatelessWidget {
-  ListProduct({this.user, Key? key}) : super(key: key);
+  ListProduct({this.products});
 
-  final User? user;
-
-  List products = [];
-
-  CollectionReference productReference =
-      FirebaseFirestore.instance.collection('Product');
-
-  // Future<List> getProducts() async {
-  //   QuerySnapshot products =
-  //       await productReference.where('userId', isEqualTo: user?.uid).get();
-
-  //   List productList = [];
-
-  //   if (products.docs.length != 0) {
-  //     for (var doc in products.docs) {
-  //       productList.add(doc.data());
-  //     }
-  //   }
-  // }
+  final List? products;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +23,14 @@ class ListProduct extends StatelessWidget {
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const <Widget>[
-                ProductCard(title: "prueba"),
-                ProductCard(title: "prueba"),
-              ],
+              children: (products as List).isNotEmpty
+                  ? (products as List).map((respo) {
+                      return ProductCard(title: respo);
+                    }).toList()
+                  : const <Widget>[
+                      ProductCard(title: "prueba"),
+                      ProductCard(title: "prueba"),
+                    ],
             ),
           ],
         ),
