@@ -18,6 +18,7 @@ class AuthServices with ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       User? user = authResult.user;
+
       setLoading(false);
       return user;
     } on SocketException {

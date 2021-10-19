@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/methods/global_methods.dart';
@@ -73,10 +74,14 @@ class _LoginState extends State<Login> {
               MaterialButton(
                 onPressed: () async {
                   if (_formkey.currentState!.validate()) {
-                    await loginProvider.login(_emailController.text.trim(),
+                    User? user = await loginProvider.login(
+                        _emailController.text.trim(),
                         _passwordController.text.trim());
+
+                    if (user?.uid != null) {
+                      toPrincipal(context);
+                    }
                   }
-                  toPrincipal(context);
                 },
                 height: 55,
                 minWidth: double.infinity,
@@ -96,7 +101,6 @@ class _LoginState extends State<Login> {
                         ),
                       ),
               ),
-              const SizedBox(height: 15),
               MaterialButton(
                 onPressed: () => widget.toggleScreen(),
                 height: 55,

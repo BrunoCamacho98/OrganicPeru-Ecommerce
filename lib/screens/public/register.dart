@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/services/authentification/auth_services.dart';
@@ -18,6 +20,9 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
+  CollectionReference userReference =
+      FirebaseFirestore.instance.collection('Users');
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +42,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
         body: SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(15.0),
         child: Form(
           key: _formkey,
           child: Column(
@@ -51,7 +56,7 @@ class _RegisterState extends State<Register> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -60,7 +65,7 @@ class _RegisterState extends State<Register> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
@@ -70,7 +75,7 @@ class _RegisterState extends State<Register> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: _repeatPasswordController,
                 obscureText: true,
@@ -80,12 +85,26 @@ class _RegisterState extends State<Register> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               MaterialButton(
                 onPressed: () async {
                   if (_formkey.currentState!.validate()) {
-                    await loginProvider.register(_emailController.text.trim(),
+                    User user = await loginProvider.register(
+                        _emailController.text.trim(),
                         _passwordController.text.trim());
+
+                    userReference.add({
+                      'id': userReference.doc().id,
+                      'email': _emailController.text.trim(),
+                      'dni': null,
+                      'address': null,
+                      'name': _emailController.text.trim(),
+                      'uid': user.uid
+                    }).then((value) {
+                      _emailController.clear();
+                      _passwordController.clear();
+                      _repeatPasswordController.clear();
+                    });
                   }
                 },
                 height: 55,
