@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // Pages
 // import 'package:organic/screens/public/login.dart';
@@ -14,7 +15,7 @@ import 'package:organic/screens/principal/principal.dart';
 //       context, MaterialPageRoute(builder: (context) => Login()));
 // }
 
-void toPrincipal(BuildContext context) async {
+void toPrincipal(BuildContext context, User? user) async {
   await Navigator.push(
-      context, MaterialPageRoute(builder: (context) => Principal()));
+      context, MaterialPageRoute(builder: (context) => Principal(user: user)));
 }

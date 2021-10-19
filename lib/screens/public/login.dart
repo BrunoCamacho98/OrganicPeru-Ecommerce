@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
                         _passwordController.text.trim());
 
                     if (user?.uid != null) {
-                      toPrincipal(context);
+                      toPrincipal(context, user);
                     }
                   }
                 },

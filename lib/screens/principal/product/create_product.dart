@@ -1,17 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 
 class CreateProduct extends StatefulWidget {
+  final User? user;
+  CreateProduct({this.user});
+
   @override
-  _CreateProductState createState() => _CreateProductState();
+  _CreateProductState createState() => _CreateProductState(user: user);
 }
 
 class _CreateProductState extends State<CreateProduct> {
+  _CreateProductState({this.user});
+
+  final User? user;
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+  CollectionReference productReference =
+      FirebaseFirestore.instance.collection('Product');
 
   @override
   void initState() {
@@ -25,6 +37,26 @@ class _CreateProductState extends State<CreateProduct> {
     _weightController.dispose();
     _priceController.dispose();
     super.dispose();
+  }
+
+  void addProduct() {
+    if (_nameController.text.isNotEmpty &&
+        _weightController.text.isNotEmpty &&
+        _priceController.text.isNotEmpty) {
+      productReference.add({
+        'id': productReference.doc().id,
+        'name': _nameController.text.trim(),
+        'description': _descriptionController.text.trim(),
+        'weight': _weightController.text.trim(),
+        'price': _priceController.text.trim(),
+        'userId': user?.uid
+      }).then((value) {
+        _nameController.clear();
+        _descriptionController.clear();
+        _weightController.clear();
+        _priceController.clear();
+      });
+    }
   }
 
   @override
@@ -127,7 +159,9 @@ class _CreateProductState extends State<CreateProduct> {
               ),
               const SizedBox(height: 20),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  addProduct();
+                },
                 height: 55,
                 minWidth: double.infinity,
                 color: kPrimaryColor,

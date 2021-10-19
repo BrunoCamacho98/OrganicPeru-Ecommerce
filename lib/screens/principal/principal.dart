@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // Constant
@@ -10,10 +11,19 @@ import 'package:organic/screens/public/Authentication/authentifcation.dart';
 import 'package:organic/screens/public/login.dart';
 
 class Principal extends StatefulWidget {
-  PrincipalState createState() => PrincipalState();
+  final User? user;
+
+  Principal({this.user});
+
+  @override
+  PrincipalState createState() => PrincipalState(user: user);
 }
 
 class PrincipalState extends State<Principal> {
+  PrincipalState({this.user});
+
+  final User? user;
+
   int _selectDrawerItem = -1;
 
   _getDrawerItemWidget(int pos) {
@@ -21,11 +31,11 @@ class PrincipalState extends State<Principal> {
       case -1:
         return Body();
       case 0:
-        return CreateProduct();
+        return CreateProduct(user: user);
       case 1:
-        return CreateProduct();
+        return CreateProduct(user: user);
       case 4:
-        return const ListProduct();
+        return ListProduct(user: user);
       case 5:
         return Authentication();
     }
@@ -57,14 +67,14 @@ class PrincipalState extends State<Principal> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          const UserAccountsDrawerHeader(
-            accountName: Text('Elver Galarga'),
-            accountEmail: Text('elver.galarga@gmail.com'),
+          UserAccountsDrawerHeader(
+            accountName: Text(user?.email as String),
+            accountEmail: Text(user?.email as String),
             currentAccountPicture: CircleAvatar(
               backgroundColor: kBackgroundColor,
               child: Text(
-                'E',
-                style: TextStyle(fontSize: 40.0),
+                (user?.email as String).substring(0, 1).toUpperCase(),
+                style: const TextStyle(fontSize: 40.0),
               ),
             ),
           ),

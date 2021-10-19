@@ -1,8 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatelessWidget {
-  const ListProduct({Key? key}) : super(key: key);
+  ListProduct({this.user, Key? key}) : super(key: key);
+
+  final User? user;
+
+  List products = [];
+
+  CollectionReference productReference =
+      FirebaseFirestore.instance.collection('Product');
+
+  // Future<List> getProducts() async {
+  //   QuerySnapshot products =
+  //       await productReference.where('userId', isEqualTo: user?.uid).get();
+
+  //   List productList = [];
+
+  //   if (products.docs.length != 0) {
+  //     for (var doc in products.docs) {
+  //       productList.add(doc.data());
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
