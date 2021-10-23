@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,8 @@ class _CreateProductState extends State<CreateProduct> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+  File? file;
 
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');

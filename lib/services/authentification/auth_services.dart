@@ -17,6 +17,8 @@ class AuthServices with ChangeNotifier {
       UserCredential authResult = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      print(authResult);
+
       User? user = authResult.user;
 
       setLoading(false);

@@ -45,6 +45,7 @@ class _RegisterState extends State<Register> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: _formkey,
+          autovalidateMode: AutovalidateMode.always,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,8 +60,16 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 25),
               TextFormField(
                 controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.always,
+                validator: (val) => val!.isEmpty ||
+                        !val.contains("@") ||
+                        val.endsWith("@") ||
+                        val.endsWith(".")
+                    ? "Enter a valid eamil"
+                    : null,
                 decoration: InputDecoration(
-                    hintText: "Correo electrónico",
+                    hintText: "user@example.com",
                     prefixIcon: const Icon(Icons.mail),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
@@ -68,6 +77,9 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 25),
               TextFormField(
                 controller: _passwordController,
+                validator: (val) => val!.isEmpty || val.characters.length < 8
+                    ? "La contraseña debe tener como mínimo 8 dígitos"
+                    : null,
                 obscureText: true,
                 decoration: InputDecoration(
                     hintText: "Contraseña",
@@ -78,6 +90,10 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 25),
               TextFormField(
                 controller: _repeatPasswordController,
+                validator: (val) =>
+                    val!.isEmpty || val.compareTo(_passwordController.text) != 0
+                        ? "Debe coincidir con la contraseña"
+                        : null,
                 obscureText: true,
                 decoration: InputDecoration(
                     hintText: "Repetir contraseña",
