@@ -1,8 +1,13 @@
-import 'dart:html';
-
+import 'dart:io';
+// * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+// * IMAGES
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_picker/image_picker.dart';
+// * CONSTANT
 import 'package:organic/constants/theme.dart';
 
 class CreateProduct extends StatefulWidget {
@@ -16,6 +21,8 @@ class CreateProduct extends StatefulWidget {
 class _CreateProductState extends State<CreateProduct> {
   _CreateProductState({this.user});
 
+  var storage = FirebaseStorage.instance;
+
   final User? user;
 
   final TextEditingController _nameController = TextEditingController();
@@ -24,7 +31,7 @@ class _CreateProductState extends State<CreateProduct> {
   final TextEditingController _priceController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
-  File? file;
+  // File? file;
 
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');
@@ -59,9 +66,18 @@ class _CreateProductState extends State<CreateProduct> {
         _descriptionController.clear();
         _weightController.clear();
         _priceController.clear();
+        // file = null;
       });
     }
   }
+
+  // Future<void> _pickImage(ImageSource source) async {
+  //   File selected = await ImagePicker.pickImage(source: source) as File;
+
+  //   setState(() {
+  //     file = selected;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +114,14 @@ class _CreateProductState extends State<CreateProduct> {
                                   "assets/images/saco-organic.jpeg"))),
                     ),
                   ),
+                  // () => _pickImage(ImageSource.gallery)
                   const Padding(
                     padding: EdgeInsets.only(top: 60.0),
-                    child: Icon(
-                      Icons.camera_alt,
+                    child: IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.camera_alt,
+                      ),
                     ),
                   ),
                 ],

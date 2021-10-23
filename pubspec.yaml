@@ -37,12 +37,15 @@ dependencies:
   flutter_svg:
   meta:
   provider:
+
   firebase_auth:
   firebase_core:
   firebase_database:
   firebase_storage:
-  firebase_storage:
   cloud_firestore:
+
+  # image_cropper:
+  # image_picker:
 
 dev_dependencies:
   flutter_test:
