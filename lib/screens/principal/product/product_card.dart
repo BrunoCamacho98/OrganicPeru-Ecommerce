@@ -11,18 +11,19 @@ class ProductCard extends StatelessWidget {
   // * Parametros de la vista
   // ? key: Clave de la vista, no es necesario colocarle un valor
   // ? Product: Producto que se esta instanciando
-  ProductCard({Key? key, required this.product}) : super(key: key);
+  // ? removeProduct: Función para eliminar producto;
+  ProductCard({Key? key, required this.product, this.removeProduct})
+      : super(key: key);
 
+  // * Función de eliminación de producto
+  Function? removeProduct;
+
+  // * Variable del producto
   final Product product;
 
-  CollectionReference productReference = FirebaseFirestore.instance
-      .collection('Product'); // * Referencia al documento Product de Firestore
-
-  Future removeProduct() async {
-    await productReference
-        .doc(product.id)
-        .delete(); // * Eliminar producto mediante uso id
-  }
+  // * Referencia a la colección Product de Firestore
+  CollectionReference productReference =
+      FirebaseFirestore.instance.collection('Product');
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class ProductCard extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined)),
             // * Eliminar
             IconButton(
-                onPressed: () async => removeProduct(),
+                onPressed: () async => removeProduct,
                 alignment: Alignment.center,
                 color: Colors.redAccent,
                 icon: const Icon(Icons.delete_outline))
