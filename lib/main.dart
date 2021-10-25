@@ -10,6 +10,7 @@ import 'package:organic/services/authentification/auth_services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // Inicializar todas las librerías antes de correr la app
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().then((value) {
     runApp(const MyApp());
