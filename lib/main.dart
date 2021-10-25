@@ -1,13 +1,11 @@
 // Firebase
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
-import 'package:organic/screens/public/login.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:provider/provider.dart';
 

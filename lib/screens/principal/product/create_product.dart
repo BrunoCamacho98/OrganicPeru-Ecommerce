@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+// * SERVICES
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:organic/services/firebaseApi/firebase_api.dart';
 // * IMAGES
-// import 'package:image_cropper/image_cropper.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
 
@@ -29,9 +31,11 @@ class _CreateProductState extends State<CreateProduct> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final _formkey = GlobalKey<FormState>();
 
-  // File? file;
+  File? file;
+  UploadTask? task;
+
+  bool loading = false;
 
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');
@@ -50,34 +54,60 @@ class _CreateProductState extends State<CreateProduct> {
     super.dispose();
   }
 
-  void addProduct() {
+  void addProduct() async {
     if (_nameController.text.isNotEmpty &&
         _weightController.text.isNotEmpty &&
         _priceController.text.isNotEmpty) {
+      setState(() {
+        loading = true;
+      });
+      await uploadFile();
       productReference.add({
         'id': productReference.doc().id,
         'name': _nameController.text.trim(),
         'description': _descriptionController.text.trim(),
         'weight': _weightController.text.trim(),
         'price': _priceController.text.trim(),
-        'userId': user?.uid
+        'userId': user?.uid,
+        'image': file?.path
       }).then((value) {
         _nameController.clear();
         _descriptionController.clear();
         _weightController.clear();
         _priceController.clear();
-        // file = null;
+        setState(() {
+          file = null;
+          loading = false;
+        });
       });
     }
   }
 
-  // Future<void> _pickImage(ImageSource source) async {
-  //   File selected = await ImagePicker.pickImage(source: source) as File;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-  //   setState(() {
-  //     file = selected;
-  //   });
-  // }
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+
+  Future uploadFile() async {
+    if (file == null) return;
+
+    final fileName = basename(file!.path);
+    final destination = 'files/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,25 +131,21 @@ class _CreateProductState extends State<CreateProduct> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: kBackgroundColor,
-                      child: ClipOval(
-                          child: SizedBox(
-                              width: 150,
-                              height: 150,
-                              child: Image.asset(
-                                  "assets/images/saco-organic.jpeg"))),
-                    ),
-                  ),
-                  // () => _pickImage(ImageSource.gallery)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 60.0),
+                  file != null
+                      ? Image.file(file as File, height: 100.0, width: 100.0)
+                      : Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.0),
+                            color: Colors.grey,
+                          ),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60.0),
                     child: IconButton(
-                      onPressed: null,
-                      icon: Icon(
+                      onPressed: selectFile,
+                      icon: const Icon(
                         Icons.camera_alt,
                       ),
                     ),
@@ -194,13 +220,17 @@ class _CreateProductState extends State<CreateProduct> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 0,
-                child: const Text(
-                  "Guardar",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                child: loading
+                    ? const CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                      )
+                    : const Text(
+                        "Guardar",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
               ),
             ],
           ),

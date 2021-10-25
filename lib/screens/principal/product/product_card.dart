@@ -1,13 +1,34 @@
+// * SERVICES
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+// * CONSTANT
 import 'package:organic/constants/theme.dart';
+// * MODEL
+import 'package:organic/models/product.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key, required this.title}) : super(key: key);
+  ProductCard({Key? key, required this.product}) : super(key: key);
 
-  final String title;
+  final Product product;
+  String? url;
+
+  Future loadFile(String? image) async {
+    if (image == null) return null;
+
+    final fileName = basename(image);
+    final destination = 'files/$fileName';
+
+    final ref = FirebaseStorage.instance.ref().child('files').child(fileName);
+    var url = await ref.getDownloadURL();
+    print(url);
+    return url;
+  }
 
   @override
   Widget build(BuildContext context) {
+    loadFile(product.image).then((value) => url = (value as String));
+
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black12),
@@ -25,11 +46,20 @@ class ProductCard extends StatelessWidget {
                     child: SizedBox(
                         width: 50,
                         height: 50,
-                        child: Image.asset("assets/images/saco-organic.jpeg"))),
+                        child: url != null
+                            ? Image.network(url!)
+                            : Container(
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  color: Colors.grey,
+                                ),
+                              ))),
               ),
             ),
             Text(
-              title,
+              product.getName(),
               style: const TextStyle(fontSize: 16),
             ),
           ],

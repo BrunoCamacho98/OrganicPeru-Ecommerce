@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:organic/models/product.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatefulWidget {
@@ -17,10 +19,12 @@ class _ListProductState extends State<ListProduct> {
 
   final User? user;
 
-  List products = [];
+  List<Product> products = [];
 
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');
+
+  UploadTask? task;
 
   @override
   void initState() {
@@ -32,15 +36,15 @@ class _ListProductState extends State<ListProduct> {
     });
   }
 
-  Future<List> getProducts() async {
+  Future<List<Product>> getProducts() async {
     QuerySnapshot products =
         await productReference.where('userId', isEqualTo: user?.uid).get();
 
-    List productList = [];
+    List<Product> productList = [];
 
     if (products.docs.length != 0) {
       for (var doc in products.docs) {
-        productList.add(doc.get('name'));
+        productList.add(Product.fromSnapshot(doc));
       }
     }
 
@@ -63,16 +67,19 @@ class _ListProductState extends State<ListProduct> {
               ),
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: (products as List).isNotEmpty
-                  ? (products as List).map((respo) {
-                      return ProductCard(title: respo);
-                    }).toList()
-                  : const <Widget>[
-                      ProductCard(title: "prueba"),
-                      ProductCard(title: "prueba"),
-                    ],
-            ),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: products.isNotEmpty
+                    ? products.map((product) {
+                        return ProductCard(product: product);
+                      }).toList()
+                    : [
+                        Container(
+                          child: const Text("No tiene productos"),
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                        )
+                      ]),
           ],
         ),
       ),
