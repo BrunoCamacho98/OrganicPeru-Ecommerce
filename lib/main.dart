@@ -28,16 +28,20 @@ class MyApp extends StatelessWidget {
         future: _init,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            // * Vista en caso haya algun error con firebase
             return ErrorWidget();
           } else if (snapshot.hasData) {
+            // * Vista principal
             return MultiProvider(
               providers: [
+                // * Detectan cambio en el usuario de Firebase (login) y guardan ese dato
                 ChangeNotifierProvider<AuthServices>.value(
                     value: AuthServices()),
                 StreamProvider<User?>.value(
                     value: AuthServices().user, initialData: null)
               ],
               child: MaterialApp(
+                // * Designar los colores usados en la aplicación
                 theme: ThemeData(
                   primarySwatch: kprimarySwatch,
                   primaryColor: kPrimaryColor,
@@ -46,16 +50,19 @@ class MyApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
                 debugShowCheckedModeBanner: false,
+                // * Vista de Authentication (login y registro), en caso el usuario no este logeado
                 home: Authentication(),
               ),
             );
           } else {
+            // * Vista de carga: Mientas se espera a que termine de cargar las vistas
             return Loading();
           }
         });
   }
 }
 
+// * Vista de error
 class ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -68,6 +75,7 @@ class ErrorWidget extends StatelessWidget {
   }
 }
 
+// * Vista de carga
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

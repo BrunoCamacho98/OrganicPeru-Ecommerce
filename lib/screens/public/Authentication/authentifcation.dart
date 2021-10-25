@@ -8,7 +8,10 @@ class Authentication extends StatefulWidget {
 }
 
 class _AuthenticationState extends State<Authentication> {
+  // * Variable que valida que vista mostrar
   bool isToogle = false;
+
+  // * Cambio de valor de la variable isToogle, para el cambio de vista
   void toggleScreen() {
     setState(() {
       isToogle = !isToogle;
@@ -18,8 +21,10 @@ class _AuthenticationState extends State<Authentication> {
   @override
   Widget build(BuildContext context) {
     if (isToogle) {
+      // * Vista de registro
       return Register(toggleScreen: toggleScreen);
     } else {
+      // * Vista de inicio de sesión
       return Login(toggleScreen: toggleScreen);
     }
   }

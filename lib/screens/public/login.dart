@@ -15,7 +15,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  // * Controlador de la caja de texto de email
   final TextEditingController _emailController = TextEditingController();
+  // * Controlador de la caja de texto de password
   final TextEditingController _passwordController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
@@ -24,6 +26,7 @@ class _LoginState extends State<Login> {
     super.initState();
   }
 
+  // * Permite un reinicio de los controladores cada vez que se abre la vista
   @override
   void dispose() {
     _emailController.dispose();
@@ -52,6 +55,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               const SizedBox(height: 30),
+              // * Caja de texto para ingreso de email
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -61,6 +65,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 30),
+              // * Caja de texto para ingreso de contraseña
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
@@ -71,9 +76,11 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 30),
+              // * Botón para validar el inicio de sesión
               MaterialButton(
                 onPressed: () async {
                   if (_formkey.currentState!.validate()) {
+                    // * Método de inicio de sesión
                     User? user = await loginProvider.login(
                         _emailController.text.trim(),
                         _passwordController.text.trim());
@@ -101,6 +108,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
               ),
+              // * Botón de envio a la vista de registro
               MaterialButton(
                 onPressed: () => widget.toggleScreen(),
                 height: 55,

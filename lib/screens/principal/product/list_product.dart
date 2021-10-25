@@ -54,15 +54,6 @@ class _ListProductState extends State<ListProduct> {
     return productList;
   }
 
-  // Future<void> removeProduct(String productId) {
-  //   return productReference.doc(productId).delete();
-  // }
-
-  // void rejectProduct(Product producto) async {
-  //   await removeProduct(producto.id!);
-  //   products.remove(producto);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(

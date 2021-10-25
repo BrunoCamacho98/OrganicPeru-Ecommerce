@@ -1,25 +1,34 @@
+// * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:organic/constants/theme.dart';
+// * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+// * CONSTANT
+import 'package:organic/constants/theme.dart';
 
 class Register extends StatefulWidget {
   final Function toggleScreen;
 
+// * Parámetros de la vista de registro
+// ? toggleScreen: Función para cambio de vista
   const Register({Key? key, required this.toggleScreen}) : super(key: key);
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
+  // * Controlador de la caja de texto de email
   final TextEditingController _emailController = TextEditingController();
+  // * Controlador de la caja de texto de contraseña
   final TextEditingController _passwordController = TextEditingController();
+  // * Controlador de la caja de texto para repetición de la contraseña
   final TextEditingController _repeatPasswordController =
       TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
+// * Referenciando a la coleccion Users
   CollectionReference userReference =
       FirebaseFirestore.instance.collection('Users');
 
@@ -28,6 +37,7 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
+// * Permite un reinicio de los controladores cada vez que se abre la vista
   @override
   void dispose() {
     _emailController.dispose();
@@ -38,6 +48,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    // * Referenciando el servicio de Authentication, creado en Authentication.dart
     final loginProvider = Provider.of<AuthServices>(context);
     return Scaffold(
         body: SafeArea(
@@ -58,6 +69,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               const SizedBox(height: 25),
+              // * Caja de texto para ingreso de email
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -75,6 +87,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 25),
+              // * Caja de texto para ingreso de contraseña
               TextFormField(
                 controller: _passwordController,
                 validator: (val) => val!.isEmpty || val.characters.length < 8
@@ -88,6 +101,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 25),
+              // * Caja de texto para repetición de la contraseña
               TextFormField(
                 controller: _repeatPasswordController,
                 validator: (val) =>
@@ -102,13 +116,16 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 25),
+              // * Botón para registro de usuario
               MaterialButton(
                 onPressed: () async {
                   if (_formkey.currentState!.validate()) {
+                    // * Registro de usuario a Authentication
                     User user = await loginProvider.register(
                         _emailController.text.trim(),
                         _passwordController.text.trim());
 
+                    // * Creación de usuario en Firestore, agregando la uid del usuario de authentication
                     userReference.add({
                       'id': userReference.doc().id,
                       'email': _emailController.text.trim(),
@@ -120,6 +137,7 @@ class _RegisterState extends State<Register> {
                       _emailController.clear();
                       _passwordController.clear();
                       _repeatPasswordController.clear();
+                      widget.toggleScreen();
                     });
                   }
                 },
@@ -142,7 +160,9 @@ class _RegisterState extends State<Register> {
                       ),
               ),
               const SizedBox(height: 15),
+              // * Volver a la vista de Login
               MaterialButton(
+                // * Cambio de vista
                 onPressed: () => widget.toggleScreen(),
                 height: 55,
                 minWidth: double.infinity,
