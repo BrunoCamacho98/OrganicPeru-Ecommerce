@@ -8,6 +8,7 @@ class Product {
   String? image;
   String? price;
   String? weight;
+  String? userId;
 
   DocumentReference? reference;
 
@@ -18,6 +19,7 @@ class Product {
       this.image,
       this.price,
       this.weight,
+      this.userId,
       this.reference});
 
   factory Product.fromSnapshot(QueryDocumentSnapshot snapshot) {
@@ -38,7 +40,7 @@ class Product {
   }
 
   getPrice() {
-    return price;
+    return 'S/. ' + price!;
   }
 
   getWeight() {
@@ -56,6 +58,21 @@ class Product {
     price = snapshot.value['price'];
     weight = snapshot.value['weight'];
     image = snapshot.value['image'];
+    userId = snapshot.value['userId'];
+  }
+
+  toMapString() {
+    Map<String, dynamic> map = {
+      'id': id,
+      'name': name,
+      'description': description,
+      'weight': weight,
+      'price': price,
+      'userId': userId,
+      'image': image
+    };
+
+    return map;
   }
 }
 
@@ -66,5 +83,6 @@ Product _productFromJson(Map<String, dynamic> json) {
       description: json['description'],
       image: json['image'],
       price: json['price'],
-      weight: json['weight']);
+      weight: json['weight'],
+      userId: json['userId']);
 }

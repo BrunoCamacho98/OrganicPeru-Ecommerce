@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // * SERVICES
 import 'package:flutter/material.dart';
+import 'package:organic/models/product.dart';
 import 'package:path/path.dart';
 import 'package:organic/services/firebaseApi/firebase_api.dart';
 // * IMAGES
@@ -61,16 +62,18 @@ class _CreateProductState extends State<CreateProduct> {
       setState(() {
         loading = true;
       });
-      await uploadFile();
-      productReference.add({
-        'id': productReference.doc().id,
-        'name': _nameController.text.trim(),
-        'description': _descriptionController.text.trim(),
-        'weight': _weightController.text.trim(),
-        'price': _priceController.text.trim(),
-        'userId': user?.uid,
-        'image': file?.path
-      }).then((value) {
+      var url = await uploadFile();
+
+      var product = Product(
+          id: productReference.doc().id,
+          name: _nameController.text.trim(),
+          description: _descriptionController.text.trim(),
+          weight: _weightController.text.trim(),
+          price: _priceController.text.trim(),
+          userId: user?.uid,
+          image: url);
+
+      productReference.add(product.toMapString()).then((value) {
         _nameController.clear();
         _descriptionController.clear();
         _weightController.clear();
@@ -79,6 +82,9 @@ class _CreateProductState extends State<CreateProduct> {
           file = null;
           loading = false;
         });
+
+        product.id = value.id;
+        productReference.doc(value.id).set(product.toMapString());
       });
     }
   }
@@ -93,7 +99,7 @@ class _CreateProductState extends State<CreateProduct> {
   }
 
   Future uploadFile() async {
-    if (file == null) return;
+    if (file == null) return null;
 
     final fileName = basename(file!.path);
     final destination = 'files/$fileName';
@@ -101,12 +107,12 @@ class _CreateProductState extends State<CreateProduct> {
     task = FirebaseApi.uploadFile(destination, file!);
     setState(() {});
 
-    if (task == null) return;
+    if (task == null) return null;
 
     final snapshot = await task!.whenComplete(() {});
     final urlDownload = await snapshot.ref.getDownloadURL();
 
-    print('Download-Link: $urlDownload');
+    return urlDownload;
   }
 
   @override

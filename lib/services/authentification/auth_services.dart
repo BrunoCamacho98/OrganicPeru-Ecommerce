@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 class AuthServices with ChangeNotifier {
@@ -16,8 +15,6 @@ class AuthServices with ChangeNotifier {
     try {
       UserCredential authResult = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-
-      print(authResult);
 
       User? user = authResult.user;
 

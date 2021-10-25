@@ -21,8 +21,9 @@ class _ListProductState extends State<ListProduct> {
 
   List<Product> products = [];
 
-  CollectionReference productReference =
-      FirebaseFirestore.instance.collection('Product');
+  final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
+      .collection('Product')
+      .snapshots(includeMetadataChanges: true);
 
   UploadTask? task;
 
@@ -37,12 +38,14 @@ class _ListProductState extends State<ListProduct> {
   }
 
   Future<List<Product>> getProducts() async {
-    QuerySnapshot products =
-        await productReference.where('userId', isEqualTo: user?.uid).get();
+    QuerySnapshot products = await FirebaseFirestore.instance
+        .collection('Product')
+        .where('userId', isEqualTo: user?.uid)
+        .get();
 
     List<Product> productList = [];
 
-    if (products.docs.length != 0) {
+    if (products.docs.isNotEmpty) {
       for (var doc in products.docs) {
         productList.add(Product.fromSnapshot(doc));
       }
@@ -51,38 +54,61 @@ class _ListProductState extends State<ListProduct> {
     return productList;
   }
 
+  // Future<void> removeProduct(String productId) {
+  //   return productReference.doc(productId).delete();
+  // }
+
+  // void rejectProduct(Product producto) async {
+  //   await removeProduct(producto.id!);
+  //   products.remove(producto);
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              child: Text(
-                'Mis Productos',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+    return StreamBuilder<QuerySnapshot>(
+        stream: _productStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading");
+          }
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                    child: Text(
+                      'Mis Productos',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: products.isNotEmpty
+                          ? products.map((product) {
+                              return ProductCard(product: product);
+                            }).toList()
+                          : [
+                              Container(
+                                child: const Text("No tiene productos"),
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                              )
+                            ]),
+                ],
               ),
             ),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: products.isNotEmpty
-                    ? products.map((product) {
-                        return ProductCard(product: product);
-                      }).toList()
-                    : [
-                        Container(
-                          child: const Text("No tiene productos"),
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.all(5),
-                          alignment: Alignment.center,
-                        )
-                      ]),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }

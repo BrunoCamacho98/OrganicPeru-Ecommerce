@@ -1,15 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// * SERVICES
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-// Constant
+// * CONSTANT
 import 'package:organic/constants/theme.dart';
-// Screeen
+// * SCREENS
 import 'package:organic/screens/principal/components/body.dart';
 import 'package:organic/screens/principal/product/create_product.dart';
 import 'package:organic/screens/principal/product/list_product.dart';
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
-import 'package:organic/screens/public/login.dart';
 
 class Principal extends StatefulWidget {
   final User? user;
