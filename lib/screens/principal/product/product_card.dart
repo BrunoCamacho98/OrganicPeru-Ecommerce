@@ -12,11 +12,11 @@ class ProductCard extends StatelessWidget {
   // ? key: Clave de la vista, no es necesario colocarle un valor
   // ? Product: Producto que se esta instanciando
   // ? removeProduct: Función para eliminar producto;
-  ProductCard({Key? key, required this.product, this.removeProduct})
+  ProductCard({Key? key, required this.product, required this.removeProduct})
       : super(key: key);
 
   // * Función de eliminación de producto
-  Function? removeProduct;
+  final Function removeProduct;
 
   // * Variable del producto
   final Product product;
@@ -89,7 +89,7 @@ class ProductCard extends StatelessWidget {
                 icon: const Icon(Icons.edit_outlined)),
             // * Eliminar
             IconButton(
-                onPressed: () async => removeProduct,
+                onPressed: () async => removeProduct(product.id),
                 alignment: Alignment.center,
                 color: Colors.redAccent,
                 icon: const Icon(Icons.delete_outline))

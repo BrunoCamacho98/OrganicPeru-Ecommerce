@@ -57,6 +57,14 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 30),
               // * Caja de texto para ingreso de email
               TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.always,
+                validator: (val) => val!.isEmpty ||
+                        !val.contains("@") ||
+                        val.endsWith("@") ||
+                        val.endsWith(".")
+                    ? "Enter a valid eamil"
+                    : null,
                 controller: _emailController,
                 decoration: InputDecoration(
                     hintText: "Correo electrónico",

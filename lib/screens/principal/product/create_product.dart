@@ -1,17 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'dart:io';
 // * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // * SERVICES
-import 'package:flutter/material.dart';
-import 'package:organic/models/product.dart';
-import 'package:path/path.dart';
 import 'package:organic/services/firebaseApi/firebase_api.dart';
 // * IMAGES
 import 'package:file_picker/file_picker.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
+// * MODEL
+import 'package:organic/models/product.dart';
 
 class CreateProduct extends StatefulWidget {
   final User? user;
@@ -28,16 +29,24 @@ class _CreateProductState extends State<CreateProduct> {
 
   final User? user;
 
+  // * Controlador de la caja de texto de nombre
   final TextEditingController _nameController = TextEditingController();
+  // * Controlador de la caja de texto de descripción
   final TextEditingController _descriptionController = TextEditingController();
+  // * Controlador de la caja de texto de peso
   final TextEditingController _weightController = TextEditingController();
+  // * Controlador de la caja de texto de precio
   final TextEditingController _priceController = TextEditingController();
 
+  // * Variable para la subida de imagen
   File? file;
+  // * Variable para captura de imagen
   UploadTask? task;
 
+  // * Usado para la carga en la subida de datos
   bool loading = false;
 
+  // * Referencia a la colección Producto en Firestore
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');
 
@@ -55,15 +64,20 @@ class _CreateProductState extends State<CreateProduct> {
     super.dispose();
   }
 
+  // * Método para agregar producto a la BD
   void addProduct() async {
+    // * Validación de los controladores requeridos
     if (_nameController.text.isNotEmpty &&
         _weightController.text.isNotEmpty &&
         _priceController.text.isNotEmpty) {
       setState(() {
         loading = true;
       });
+
+      // * Obtención de la url de la imagen
       var url = await uploadFile();
 
+      // * Creación del objeto producto
       var product = Product(
           id: productReference.doc().id,
           name: _nameController.text.trim(),
@@ -73,7 +87,9 @@ class _CreateProductState extends State<CreateProduct> {
           userId: user?.uid,
           image: url);
 
+      // * Guardar producto en la colección Products
       productReference.add(product.toMapString()).then((value) {
+        // * Vaciar cajas de texto después de guardar el objeto
         _nameController.clear();
         _descriptionController.clear();
         _weightController.clear();
@@ -84,32 +100,43 @@ class _CreateProductState extends State<CreateProduct> {
         });
 
         product.id = value.id;
+        // * Obteniendo el ID del objeto subido
         productReference.doc(value.id).set(product.toMapString());
       });
     }
   }
 
+  // * Método para seleccionar un archivo de la galería
   Future selectFile() async {
+    // * Devuelve el archivo seleccionado
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) return;
+    // * Devuelve la ruta de la posición del archivo
     final path = result.files.single.path!;
 
+    // * Cambio de valor de la variable file
     setState(() => file = File(path));
   }
 
+  // * Método para obtener el url de la imagen
   Future uploadFile() async {
     if (file == null) return null;
 
+    // * Obtiene el nombre de la imagen
     final fileName = basename(file!.path);
+    // * Destino está almacenada la imagen en Storage
     final destination = 'files/$fileName';
 
+    // * Obtención de la imagen
     task = FirebaseApi.uploadFile(destination, file!);
     setState(() {});
 
     if (task == null) return null;
 
     final snapshot = await task!.whenComplete(() {});
+
+    // * Obtiene el url de la imagen
     final urlDownload = await snapshot.ref.getDownloadURL();
 
     return urlDownload;
@@ -138,7 +165,9 @@ class _CreateProductState extends State<CreateProduct> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   file != null
+                      // * Imagen subida del producto
                       ? Image.file(file as File, height: 100.0, width: 100.0)
+                      // * Elemento por defecto en caso no haya ninguna imagen seleccionada
                       : Container(
                           width: 100,
                           height: 100,
@@ -149,6 +178,7 @@ class _CreateProductState extends State<CreateProduct> {
                         ),
                   Padding(
                     padding: const EdgeInsets.only(top: 60.0),
+                    // * Botón para abrir galería y selecciona imagne
                     child: IconButton(
                       onPressed: selectFile,
                       icon: const Icon(
@@ -159,6 +189,7 @@ class _CreateProductState extends State<CreateProduct> {
                 ],
               ),
               const SizedBox(height: 20),
+              // * Caja de texto para el nombre del producto
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -168,6 +199,7 @@ class _CreateProductState extends State<CreateProduct> {
                         borderRadius: BorderRadius.circular(5))),
               ),
               const SizedBox(height: 20),
+              // * Caja de texto para la descripción del producto
               TextFormField(
                 maxLines: 3,
                 controller: _descriptionController,
@@ -185,10 +217,11 @@ class _CreateProductState extends State<CreateProduct> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
+                          // * Caja de texto para el stock del producto
                           child: TextField(
                             controller: _weightController,
                             decoration: InputDecoration(
-                                hintText: "Peso",
+                                hintText: "Stock",
                                 prefixIcon: const Icon(Icons.line_weight),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5))),
@@ -200,6 +233,7 @@ class _CreateProductState extends State<CreateProduct> {
                   Expanded(
                     child: Column(
                       children: [
+                        // * Caja de texto para el precio del producto
                         TextField(
                           controller: _priceController,
                           decoration: InputDecoration(
@@ -214,6 +248,8 @@ class _CreateProductState extends State<CreateProduct> {
                 ],
               ),
               const SizedBox(height: 20),
+
+              // * Botón para guardar los datos del producto
               MaterialButton(
                 onPressed: () {
                   addProduct();

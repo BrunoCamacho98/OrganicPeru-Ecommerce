@@ -70,6 +70,8 @@ class _ListProductState extends State<ListProduct> {
 
 // ? Función para eliminar productos
   Future removeProduct(String productId) async {
+    products.removeWhere((element) => element.id == productId);
+
     await productReference
         .doc(productId)
         .delete(); // * Eliminar producto mediante uso id
@@ -113,8 +115,7 @@ class _ListProductState extends State<ListProduct> {
                               // * Retorno de la carta de detalle del producto
                               return ProductCard(
                                 product: product,
-                                removeProduct: () async =>
-                                    removeProduct(product.id!),
+                                removeProduct: removeProduct,
                               );
                             }).toList()
                           : [
