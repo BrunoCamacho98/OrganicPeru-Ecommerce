@@ -2,7 +2,7 @@
     package="com.ecommerce.organic">
    <application
         android:label="organic"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/organiclogo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
