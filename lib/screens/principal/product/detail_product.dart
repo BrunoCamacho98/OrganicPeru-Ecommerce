@@ -206,6 +206,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         padding: const EdgeInsets.only(right: 10),
                         // * Caja de texto para el stock del producto
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           controller: _weightController,
                           decoration: InputDecoration(
                               hintText: "Stock",
@@ -222,6 +223,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     children: [
                       // * Caja de texto para el precio del producto
                       TextField(
+                        keyboardType: TextInputType.number,
                         controller: _priceController,
                         decoration: InputDecoration(
                             hintText: "Costo",

@@ -39,103 +39,105 @@ class _LoginState extends State<Login> {
     final loginProvider = Provider.of<AuthServices>(context);
     return Scaffold(
         body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Form(
-          key: _formkey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                "Iniciar sesión",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              // * Caja de texto para ingreso de email
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                autovalidateMode: AutovalidateMode.always,
-                validator: (val) => val!.isEmpty ||
-                        !val.contains("@") ||
-                        val.endsWith("@") ||
-                        val.endsWith(".")
-                    ? "Enter a valid eamil"
-                    : null,
-                controller: _emailController,
-                decoration: InputDecoration(
-                    hintText: "Correo electrónico",
-                    prefixIcon: const Icon(Icons.mail),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5))),
-              ),
-              const SizedBox(height: 30),
-              // * Caja de texto para ingreso de contraseña
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: "Contraseña",
-                    prefixIcon: const Icon(Icons.vpn_key),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5))),
-              ),
-              const SizedBox(height: 30),
-              // * Botón para validar el inicio de sesión
-              MaterialButton(
-                onPressed: () async {
-                  if (_formkey.currentState!.validate()) {
-                    // * Método de inicio de sesión
-                    User? user = await loginProvider.login(
-                        _emailController.text.trim(),
-                        _passwordController.text.trim());
-
-                    if (user?.uid != null) {
-                      toPrincipal(context, user);
-                    }
-                  }
-                },
-                height: 55,
-                minWidth: double.infinity,
-                color: kPrimaryColor,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-                child: loginProvider.isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-              ),
-              // * Botón de envio a la vista de registro
-              MaterialButton(
-                onPressed: () => widget.toggleScreen(),
-                height: 55,
-                minWidth: double.infinity,
-                color: Colors.white,
-                textColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-                child: const Text(
-                  "Crear cuenta",
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Form(
+            key: _formkey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Iniciar sesión",
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 30),
+                // * Caja de texto para ingreso de email
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.always,
+                  validator: (val) => val!.isEmpty ||
+                          !val.contains("@") ||
+                          val.endsWith("@") ||
+                          val.endsWith(".")
+                      ? "Enter a valid eamil"
+                      : null,
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                      hintText: "Correo electrónico",
+                      prefixIcon: const Icon(Icons.mail),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                ),
+                const SizedBox(height: 30),
+                // * Caja de texto para ingreso de contraseña
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      hintText: "Contraseña",
+                      prefixIcon: const Icon(Icons.vpn_key),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                ),
+                const SizedBox(height: 30),
+                // * Botón para validar el inicio de sesión
+                MaterialButton(
+                  onPressed: () async {
+                    if (_formkey.currentState!.validate()) {
+                      // * Método de inicio de sesión
+                      User? user = await loginProvider.login(
+                          _emailController.text.trim(),
+                          _passwordController.text.trim());
+
+                      if (user?.uid != null) {
+                        toPrincipal(context, user);
+                      }
+                    }
+                  },
+                  height: 55,
+                  minWidth: double.infinity,
+                  color: kPrimaryColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 0,
+                  child: loginProvider.isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                ),
+                // * Botón de envio a la vista de registro
+                MaterialButton(
+                  onPressed: () => widget.toggleScreen(),
+                  height: 55,
+                  minWidth: double.infinity,
+                  color: Colors.white,
+                  textColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 0,
+                  child: const Text(
+                    "Crear cuenta",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
