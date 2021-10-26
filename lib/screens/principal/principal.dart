@@ -43,7 +43,7 @@ class PrincipalState extends State<Principal> {
         return CreateProduct(user: user);
       case 1:
         return CreateProduct(user: user);
-      case 4:
+      case 2:
         return ListProduct(user: user);
       case 5:
         return Authentication();
@@ -104,9 +104,9 @@ class PrincipalState extends State<Principal> {
           ListTile(
               title: const Text('Mis productos'),
               leading: const Icon(Icons.production_quantity_limits_rounded),
-              selected: (4 == _selectDrawerItem),
+              selected: (2 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(4);
+                _onSelectItem(2);
               }),
           // * Creación de productos
           ListTile(
