@@ -202,6 +202,7 @@ class _CreateProductState extends State<CreateProduct> {
               // * Caja de texto para la descripción del producto
               TextFormField(
                 maxLines: 3,
+                maxLength: 200,
                 controller: _descriptionController,
                 decoration: InputDecoration(
                     hintText: "Descripción del producto",
