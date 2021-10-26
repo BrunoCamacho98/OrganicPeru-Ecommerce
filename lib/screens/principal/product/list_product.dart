@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/models/product.dart';
+import 'package:organic/screens/principal/product/detail_product.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatefulWidget {
@@ -77,6 +78,22 @@ class _ListProductState extends State<ListProduct> {
         .delete(); // * Eliminar producto mediante uso id
   }
 
+  Future updateData(Product producto) async {
+    productReference.doc(producto.id).update(producto.toMapString());
+
+    var index = products.indexWhere((element) => element.id == producto.id);
+    products[index] = producto;
+  }
+
+  // ? Función para abrir el modal para editar producto
+  void showProductModal(Product producto) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return ProductDetail(producto: producto, updateData: updateData);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     // * Permite actualización de elementos al detectar un cambio en la colección
@@ -116,6 +133,7 @@ class _ListProductState extends State<ListProduct> {
                               return ProductCard(
                                 product: product,
                                 removeProduct: removeProduct,
+                                detailProduct: showProductModal,
                               );
                             }).toList()
                           : [
