@@ -71,33 +71,56 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             // * Nombre del producto
-            Text(
-              product.getName(),
-              style: const TextStyle(fontSize: 16),
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Container(
+              width: MediaQuery.of(context).size.width / 3,
+              alignment: Alignment.centerRight,
+              child: Text(
+                product.getName(),
+                style: const TextStyle(fontSize: 15),
+                textAlign: TextAlign.start,
+                softWrap: true,
+                maxLines: 3,
+                textWidthBasis: TextWidthBasis.parent,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const Spacer(),
             // * Precio del producto
-            Text(
-              product.getPrice(),
-              style: const TextStyle(fontSize: 16),
+            Container(
+              width: MediaQuery.of(context).size.width / 4,
+              alignment: Alignment.center,
+              child: Text(
+                product.getPrice(),
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.start,
+                softWrap: true,
+                maxLines: 3,
+                textWidthBasis: TextWidthBasis.parent,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const Spacer(),
             // ? Opciones: Editar y Eliminar
             // * Editar
-            IconButton(
-                onPressed: () => detailProduct(product),
-                alignment: Alignment.center,
-                color: Colors.blueAccent,
-                icon: const Icon(Icons.edit_outlined)),
+            Container(
+              width: 35,
+              alignment: Alignment.center,
+              child: IconButton(
+                  onPressed: () => detailProduct(product),
+                  alignment: Alignment.center,
+                  color: Colors.blueAccent,
+                  icon: const Icon(Icons.edit_outlined)),
+            ),
             // * Eliminar
-            IconButton(
-                onPressed: () async => removeProduct(product.id),
-                alignment: Alignment.center,
-                color: Colors.redAccent,
-                icon: const Icon(Icons.delete_outline))
+            Container(
+              width: 35,
+              alignment: Alignment.center,
+              child: IconButton(
+                  onPressed: () async => removeProduct(product.id),
+                  alignment: Alignment.center,
+                  color: Colors.redAccent,
+                  icon: const Icon(Icons.delete_outline)),
+            )
           ],
         ),
       ),
