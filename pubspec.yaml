@@ -36,9 +36,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg:
   meta:
+  provider:
+
   firebase_auth:
   firebase_core:
+  firebase_database:
+  firebase_storage:
   cloud_firestore:
+
+  # image_cropper:
+  file_picker:
 
 dev_dependencies:
   flutter_test:

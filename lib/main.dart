@@ -1,13 +1,16 @@
 // Firebase
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
-import 'package:organic/screens/public/login.dart';
+import 'package:organic/screens/public/Authentication/authentifcation.dart';
+import 'package:organic/services/authentification/auth_services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  // Inicializar todas las librerías antes de correr la app
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().then((value) {
     runApp(const MyApp());
@@ -25,26 +28,41 @@ class MyApp extends StatelessWidget {
         future: _init,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            // * Vista en caso haya algun error con firebase
             return ErrorWidget();
           } else if (snapshot.hasData) {
-            return MaterialApp(
-              theme: ThemeData(
-                primarySwatch: kprimarySwatch,
-                primaryColor: kPrimaryColor,
-                textTheme:
-                    Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+            // * Vista principal
+            return MultiProvider(
+              providers: [
+                // * Detectan cambio en el usuario de Firebase (login) y guardan ese dato
+                ChangeNotifierProvider<AuthServices>.value(
+                    value: AuthServices()),
+                StreamProvider<User?>.value(
+                    value: AuthServices().user, initialData: null)
+              ],
+              child: MaterialApp(
+                // * Designar los colores usados en la aplicación
+                theme: ThemeData(
+                  primarySwatch: kprimarySwatch,
+                  primaryColor: kPrimaryColor,
+                  textTheme:
+                      Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                debugShowCheckedModeBanner: false,
+                // * Vista de Authentication (login y registro), en caso el usuario no este logeado
+                home: Authentication(),
               ),
-              debugShowCheckedModeBanner: false,
-              home: Login(),
             );
           } else {
+            // * Vista de carga: Mientas se espera a que termine de cargar las vistas
             return Loading();
           }
         });
   }
 }
 
+// * Vista de error
 class ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,6 +75,7 @@ class ErrorWidget extends StatelessWidget {
   }
 }
 
+// * Vista de carga
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

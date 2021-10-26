@@ -1,20 +1,19 @@
+// * FIREBASE
+import 'package:firebase_auth/firebase_auth.dart';
+// * SERVICES
 import 'package:flutter/material.dart';
-// Pages
-import 'package:organic/screens/public/login.dart';
-import 'package:organic/screens/public/register.dart';
+import 'package:organic/main.dart';
+// * SCREEN
 import 'package:organic/screens/principal/principal.dart';
 
-void toRegister(BuildContext context) async {
+// * Go to view Principal.dart
+void toPrincipal(BuildContext context, User? user) async {
   await Navigator.push(
-      context, MaterialPageRoute(builder: (context) => Register()));
+      context, MaterialPageRoute(builder: (context) => Principal(user: user)));
 }
 
-void toLogin(BuildContext context) async {
+// * Go to view Main.dart
+void toMain(BuildContext context) async {
   await Navigator.push(
-      context, MaterialPageRoute(builder: (context) => Login()));
-}
-
-void toPrincipal(BuildContext context) async {
-  await Navigator.push(
-      context, MaterialPageRoute(builder: (context) => Principal()));
+      context, MaterialPageRoute(builder: (context) => const MyApp()));
 }
