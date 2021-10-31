@@ -1,11 +1,13 @@
 // * SERVICES
 import 'package:organic/methods/global_methods.dart';
+import 'package:organic/models/user.dart';
+import 'package:organic/screens/principal/user/profile.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:organic/util/queries/user/user_query.dart';
 import 'package:provider/provider.dart';
 // * FIREBASE
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
 // * SCREENS
@@ -14,7 +16,7 @@ import 'package:organic/screens/principal/product/create_product.dart';
 import 'package:organic/screens/principal/product/list_product.dart';
 
 class Principal extends StatefulWidget {
-  final User? user;
+  UserLogin? user;
 
   // * Parametros de la vista
   // ? User: datos del usuario logeado
@@ -30,7 +32,9 @@ class PrincipalState extends State<Principal> {
   // ? User: datos del usuario logeado
   PrincipalState({this.user});
 
-  final User? user;
+  UserLogin? user;
+
+  final UserQuery userQuery = UserQuery();
 
   int _selectDrawerItem = -1;
 
@@ -45,6 +49,11 @@ class PrincipalState extends State<Principal> {
         return CreateProduct(user: user);
       case 2:
         return ListProduct(user: user);
+      case 3:
+        return Profile(
+          user: user,
+          updateUser: updateUser,
+        );
       case 5:
         return Authentication();
     }
@@ -74,6 +83,14 @@ class PrincipalState extends State<Principal> {
     );
   }
 
+  Future updateUser(UserLogin? userLogin) async {
+    var userUpdated = await userQuery.updateUser(userLogin!);
+
+    setState(() {
+      user = userUpdated;
+    });
+  }
+
 // * Menu lateral izquierdo
   Drawer buildDrawerApp(BuildContext context) {
     final logoutProvider = Provider.of<AuthServices>(context);
@@ -82,7 +99,7 @@ class PrincipalState extends State<Principal> {
         children: <Widget>[
           // * Datos del usuario
           UserAccountsDrawerHeader(
-            accountName: Text(user?.email as String),
+            accountName: Text(user?.name as String),
             accountEmail: Text(user?.email as String),
             currentAccountPicture: CircleAvatar(
               backgroundColor: kBackgroundColor,
@@ -122,9 +139,9 @@ class PrincipalState extends State<Principal> {
           ListTile(
               title: const Text('Perfil'),
               leading: const Icon(Icons.account_circle),
-              selected: (4 == _selectDrawerItem),
+              selected: (3 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(4);
+                _onSelectItem(3);
               }),
           // * Cierre de sesión
           ListTile(

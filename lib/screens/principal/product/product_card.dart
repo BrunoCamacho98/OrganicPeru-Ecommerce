@@ -26,6 +26,8 @@ class ProductCard extends StatelessWidget {
   // * Variable del producto
   final Product product;
 
+  Widget? dropdownValue;
+
   // * Referencia a la colección Product de Firestore
   CollectionReference productReference =
       FirebaseFirestore.instance.collection('Product');
@@ -72,7 +74,7 @@ class ProductCard extends StatelessWidget {
             ),
             // * Nombre del producto
             Container(
-              width: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 2.5,
               alignment: Alignment.centerRight,
               child: Text(
                 product.getName(),
@@ -87,7 +89,7 @@ class ProductCard extends StatelessWidget {
             const Spacer(),
             // * Precio del producto
             Container(
-              width: MediaQuery.of(context).size.width / 4,
+              width: MediaQuery.of(context).size.width / 3.8,
               alignment: Alignment.center,
               child: Text(
                 product.getPrice(),
@@ -100,30 +102,45 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            // ? Opciones: Editar y Eliminar
-            // * Editar
-            Container(
-              width: 35,
-              alignment: Alignment.center,
-              child: IconButton(
-                  onPressed: () => detailProduct(product),
-                  alignment: Alignment.center,
-                  color: Colors.blueAccent,
-                  icon: const Icon(Icons.edit_outlined)),
-            ),
-            // * Eliminar
-            Container(
-              width: 35,
-              alignment: Alignment.center,
-              child: IconButton(
-                  onPressed: () async => removeProduct(product.id),
-                  alignment: Alignment.center,
-                  color: Colors.redAccent,
-                  icon: const Icon(Icons.delete_outline)),
-            )
+            getDropdownMenu()
           ],
         ),
       ),
+    );
+  }
+
+  Widget getDropdownMenu() {
+    return DropdownButton<Widget>(
+      value: dropdownValue,
+      icon: const Icon(Icons.more_vert),
+      iconSize: 20,
+      elevation: 8,
+      alignment: Alignment.center,
+      borderRadius: BorderRadius.circular(4),
+      style: const TextStyle(color: Colors.black54),
+      underline: Container(
+        height: 1,
+        color: Colors.white,
+      ),
+      onChanged: (value) {},
+      items: <Widget>[
+        IconButton(
+            onPressed: () => detailProduct(product),
+            alignment: Alignment.center,
+            color: Colors.blueAccent,
+            icon: const Icon(Icons.edit_outlined)),
+        IconButton(
+            onPressed: () async => removeProduct(product.id),
+            alignment: Alignment.center,
+            color: Colors.redAccent,
+            icon: const Icon(Icons.delete_outline)),
+      ].map<DropdownMenuItem<Widget>>((Widget value) {
+        return DropdownMenuItem<Widget>(
+          value: value,
+          child:
+              Container(width: 10, alignment: Alignment.center, child: value),
+        );
+      }).toList(),
     );
   }
 }

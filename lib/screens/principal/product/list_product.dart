@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:organic/constants/theme.dart';
 import 'package:organic/models/product.dart';
+import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/product/detail_product.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatefulWidget {
-  final User? user;
+  final UserLogin? user;
 
   ListProduct({this.user});
 
@@ -19,7 +20,7 @@ class _ListProductState extends State<ListProduct> {
   _ListProductState({this.user});
 
   // * Usuario logeado
-  final User? user;
+  final UserLogin? user;
 
   // * Lista de productos
   List<Product> products = [];
@@ -96,6 +97,7 @@ class _ListProductState extends State<ListProduct> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     // * Permite actualización de elementos al detectar un cambio en la colección
     return StreamBuilder<QuerySnapshot>(
         stream: _productStream,
@@ -107,20 +109,40 @@ class _ListProductState extends State<ListProduct> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text("Loading");
           }
-
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-                    child: Text(
-                      'Mis Productos',
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: kDefaultPadding,
+                      right: kDefaultPadding,
+                      bottom: 0 + kDefaultPadding,
+                    ),
+                    height: size.height * 0.1 - 25,
+                    decoration: const BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(36),
+                        bottomRight: Radius.circular(36),
+                      ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'Mis Productos!',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                        ),
+                        const Spacer(),
+                        // Image.asset("assets/images/logo.png")
+                      ],
                     ),
                   ),
                   Column(

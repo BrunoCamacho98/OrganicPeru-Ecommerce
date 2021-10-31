@@ -98,6 +98,13 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(producto.getName()),
+      insetPadding: const EdgeInsets.all(8),
+      titleTextStyle: const TextStyle(
+          color: Colors.black54,
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+          wordSpacing: 0.5,
+          letterSpacing: 0.1),
       actions: [
         MaterialButton(
           onPressed: () async {
@@ -144,25 +151,32 @@ class _ProductDetailState extends State<ProductDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                file != null
-                    // * Imagen subida del producto
-                    ? Image.file(file as File, height: 100.0, width: 100.0)
-                    // * Elemento del url, en caso no se seleccionó algun archivo
-                    : producto.getImageUrl() != null
-                        ? Image.network(
-                            producto.getImageUrl(),
-                            height: 100.0,
-                            width: 100.0,
-                          )
-                        // * Elemento por defecto en caso no haya ninguna imagen seleccionada
-                        : Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              color: Colors.grey,
-                            ),
-                          ),
+                // * Elemento por defecto en caso no haya ninguna imagen seleccionada
+                Container(
+                  width: 120,
+                  height: 120,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100.0),
+                    color: file != null
+                        ? (producto.getImageUrl() != null
+                            ? Colors.white
+                            : Colors.white)
+                        : Colors.white,
+                    border: Border.all(color: Colors.grey, width: 0.8),
+                  ),
+                  child: file != null
+                      // * Imagen subida del producto
+                      ? Image.file(file as File, height: 90.0, width: 90.0)
+                      // * Elemento del url, en caso no se seleccionó algun archivo
+                      : producto.getImageUrl() != null
+                          ? Image.network(
+                              producto.getImageUrl(),
+                              height: 90.0,
+                              width: 90.0,
+                            )
+                          : null,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 60.0),
                   // * Botón para abrir galería y selecciona imagne
@@ -178,6 +192,7 @@ class _ProductDetailState extends State<ProductDetail> {
             const SizedBox(height: 20),
             // * Caja de texto para el nombre del producto
             TextFormField(
+              maxLines: 2,
               controller: _nameController,
               decoration: InputDecoration(
                   hintText: "Nombre del producto",

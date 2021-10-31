@@ -1,12 +1,15 @@
+import 'package:flutter/material.dart';
 // * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 // * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+// *  QUERIES
+import 'package:organic/util/queries/user/user_query.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
+import 'package:organic/models/user.dart';
+// * SCREENS
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   final Function toggleScreen;
@@ -28,6 +31,8 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
+  bool loading = false;
+
 // * Referenciando a la coleccion Users
   CollectionReference userReference =
       FirebaseFirestore.instance.collection('Users');
@@ -35,6 +40,12 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     super.initState();
+  }
+
+  clearAll() {
+    _emailController.clear();
+    _passwordController.clear();
+    _repeatPasswordController.clear();
   }
 
 // * Permite un reinicio de los controladores cada vez que se abre la vista
@@ -50,6 +61,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     // * Referenciando el servicio de Authentication, creado en Authentication.dart
     final loginProvider = Provider.of<AuthServices>(context);
+    final UserQuery userQuery = UserQuery();
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -122,35 +134,29 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
                       // * Registro de usuario a Authentication
-                      User user = await loginProvider.register(
-                          _emailController.text.trim(),
-                          _passwordController.text.trim());
+                      UserLogin? user = await userQuery.registerUser(
+                          context,
+                          loginProvider,
+                          _emailController.text,
+                          _passwordController.text);
 
-                      // * Creación de usuario en Firestore, agregando la uid del usuario de authentication
-                      userReference.add({
-                        'id': userReference.doc().id,
-                        'email': _emailController.text.trim(),
-                        'dni': null,
-                        'address': null,
-                        'name': _emailController.text.trim(),
-                        'uid': user.uid
-                      }).then((value) {
+                      if (user != null) {
                         _emailController.clear();
                         _passwordController.clear();
                         _repeatPasswordController.clear();
                         widget.toggleScreen();
-                      });
+                      }
                     }
                   },
                   height: 55,
-                  minWidth: loginProvider.isLoading ? null : double.infinity,
+                  minWidth: loading ? null : double.infinity,
                   color: kPrimaryColor,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   elevation: 0,
-                  child: loginProvider.isLoading
+                  child: loading
                       ? const CircularProgressIndicator()
                       : const Text(
                           "Registrar",

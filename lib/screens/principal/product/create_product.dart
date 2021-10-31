@@ -3,7 +3,6 @@ import 'package:path/path.dart';
 import 'dart:io';
 // * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // * SERVICES
 import 'package:organic/services/firebaseApi/firebase_api.dart';
@@ -13,9 +12,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:organic/constants/theme.dart';
 // * MODEL
 import 'package:organic/models/product.dart';
+import 'package:organic/models/user.dart';
 
 class CreateProduct extends StatefulWidget {
-  final User? user;
+  final UserLogin? user;
   CreateProduct({this.user});
 
   @override
@@ -27,7 +27,7 @@ class _CreateProductState extends State<CreateProduct> {
 
   var storage = FirebaseStorage.instance;
 
-  final User? user;
+  final UserLogin? user;
 
   // * Controlador de la caja de texto de nombre
   final TextEditingController _nameController = TextEditingController();
@@ -191,6 +191,7 @@ class _CreateProductState extends State<CreateProduct> {
               const SizedBox(height: 20),
               // * Caja de texto para el nombre del producto
               TextFormField(
+                maxLines: 2,
                 controller: _nameController,
                 decoration: InputDecoration(
                     hintText: "Nombre del producto",

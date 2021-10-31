@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class User {
+class UserLogin {
   String? id;
   String? name;
   String? dni;
@@ -8,15 +9,37 @@ class User {
   String? email;
   String? uid;
 
-  User({this.id, this.name, this.dni, this.address, this.email, this.uid});
+  DocumentReference? reference;
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    dni = json['dni'];
-    address = json['address'];
-    uid = json['uid'];
+  UserLogin(
+      {this.id,
+      this.name,
+      this.dni,
+      this.address,
+      this.email,
+      this.uid,
+      this.reference});
+
+  factory UserLogin.fromSnapshot(QueryDocumentSnapshot snapshot) {
+    UserLogin newUser =
+        UserLogin.fromJson(snapshot.data() as Map<String, dynamic>);
+    newUser.reference = snapshot.reference;
+    return newUser;
+  }
+
+  factory UserLogin.fromJson(Map<String, dynamic> json) => _userFromJson(json);
+
+  toMapString() {
+    Map<String, dynamic> map = {
+      'id': id,
+      'name': name,
+      'email': email,
+      'address': address,
+      'dni': dni,
+      'uid': uid,
+    };
+
+    return map;
   }
 
   getName() {
@@ -24,7 +47,7 @@ class User {
   }
 
   getDNI() {
-    return dni;
+    return dni != null ? dni : "";
   }
 
   getEmail() {
@@ -32,14 +55,14 @@ class User {
   }
 
   getAddress() {
-    return address;
+    return address != null ? address : "";
   }
 
   getUID() {
     return uid;
   }
 
-  User.fromSnapShot(DataSnapshot snapshot) {
+  UserLogin.fromSnapShot(DataSnapshot snapshot) {
     id = snapshot.key;
     name = snapshot.value['name'];
     email = snapshot.value['email'];
@@ -47,4 +70,14 @@ class User {
     address = snapshot.value['address'];
     uid = snapshot.value['uid'];
   }
+}
+
+UserLogin _userFromJson(Map<String, dynamic> json) {
+  return UserLogin(
+      id: json['id'],
+      name: json['name'],
+      uid: json['uid'],
+      email: json['email'],
+      address: json['address'],
+      dni: json['dni']);
 }
