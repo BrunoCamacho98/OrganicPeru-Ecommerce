@@ -64,7 +64,6 @@ class UserQuery with ChangeNotifier {
   }
 
   Future<UserLogin> updateUser(UserLogin user) async {
-    print(user.id);
     final CollectionReference userReference =
         FirebaseFirestore.instance.collection("Users");
 

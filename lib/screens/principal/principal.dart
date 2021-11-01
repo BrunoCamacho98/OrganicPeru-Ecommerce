@@ -1,9 +1,11 @@
 // * SERVICES
 import 'package:organic/methods/global_methods.dart';
+import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/user/profile.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:organic/util/queries/product/product_query.dart';
 import 'package:organic/util/queries/user/user_query.dart';
 import 'package:provider/provider.dart';
 // * FIREBASE
@@ -36,13 +38,28 @@ class PrincipalState extends State<Principal> {
 
   final UserQuery userQuery = UserQuery();
 
+  final ProductQuery productQuery = ProductQuery();
+
   int _selectDrawerItem = -1;
+
+  List<Product> productos = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      productQuery.getProducts().then((value) => productos = value);
+    });
+  }
 
 // * Switch para cambio de vista, según lo seleccionado en el menú lateral
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case -1:
-        return Body();
+        return Body(
+          productos: productos,
+        );
       case 0:
         return CreateProduct(user: user);
       case 1:

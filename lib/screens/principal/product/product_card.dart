@@ -75,7 +75,7 @@ class ProductCard extends StatelessWidget {
             // * Nombre del producto
             Container(
               width: MediaQuery.of(context).size.width / 2.5,
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: Text(
                 product.getName(),
                 style: const TextStyle(fontSize: 15),

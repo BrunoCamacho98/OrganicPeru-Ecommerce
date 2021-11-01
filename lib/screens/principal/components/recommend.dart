@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/models/product.dart';
 import 'package:organic/screens/principal/details/details_screen.dart';
+import 'package:organic/util/queries/product/product_query.dart';
 
 class Recomends extends StatelessWidget {
-  const Recomends({
-    Key? key,
-  }) : super(key: key);
+  Recomends({Key? key, required this.productos}) : super(key: key);
+
+  List<Product> productos = [];
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: <Widget>[
-          RecomendPlantCard(
-            image: "assets/images/saco-organic.jpeg",
-            title: "Abono",
+        children: productos.map((producto) {
+          return RecomendPlantCard(
+            image: producto.image,
+            title: producto.name,
             country: "Perú",
-            price: 100,
+            price: producto.getPrice(),
             press: () {
               Navigator.push(
                 context,
@@ -26,29 +28,8 @@ class Recomends extends StatelessWidget {
                 ),
               );
             },
-          ),
-          RecomendPlantCard(
-            image: "assets/images/saco-organic.jpeg",
-            title: "Abono",
-            country: "Perú",
-            price: 100,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsScreen(),
-                ),
-              );
-            },
-          ),
-          RecomendPlantCard(
-            image: "assets/images/saco-organic.jpeg",
-            title: "Abono",
-            country: "Perú",
-            price: 100,
-            press: () {},
-          ),
-        ],
+          );
+        }).toList(),
       ),
     );
   }
@@ -65,26 +46,35 @@ class RecomendPlantCard extends StatelessWidget {
   }) : super(key: key);
 
   final String? image, title, country;
-  final int? price;
+  final String? price;
   final Function? press;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(
         left: kDefaultPadding,
         top: kDefaultPadding / 2,
         bottom: kDefaultPadding * 2.5,
       ),
-      width: size.width * 0.4,
+      width: 180,
+      height: 300,
       child: Column(
         children: <Widget>[
-          Image.asset(image as String),
+          image != null
+              ? Image.network(
+                  image as String,
+                  height: 240,
+                )
+              : Image.asset(
+                  "assets/images/saco-organic.jpeg",
+                  height: 240,
+                ),
           GestureDetector(
             onTap: () {},
             child: Container(
               padding: const EdgeInsets.all(kDefaultPadding / 2),
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
@@ -100,30 +90,37 @@ class RecomendPlantCard extends StatelessWidget {
                 ],
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: "$title\n".toUpperCase(),
-                            style: Theme.of(context).textTheme.button),
-                        TextSpan(
-                          text: "$country".toUpperCase(),
-                          style: TextStyle(
-                            color: kPrimaryColor.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
+                  Container(
+                    width: 100,
+                    margin: const EdgeInsets.only(right: 1.5),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      title!.toUpperCase(),
+                      style: const TextStyle(fontSize: 13),
+                      textAlign: TextAlign.start,
+                      softWrap: true,
+                      maxLines: 2,
+                      textWidthBasis: TextWidthBasis.parent,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    '\$$price',
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        ?.copyWith(color: kPrimaryColor),
-                  )
+                  Container(
+                    width: 58,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      price!,
+                      style:
+                          const TextStyle(fontSize: 13.5, color: kPrimaryColor),
+                      textAlign: TextAlign.start,
+                      softWrap: true,
+                      maxLines: 1,
+                      textWidthBasis: TextWidthBasis.parent,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
             ),
