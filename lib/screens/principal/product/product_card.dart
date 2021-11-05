@@ -52,7 +52,7 @@ class ProductCard extends StatelessWidget {
                   child: SizedBox(
                     width: 40,
                     height: 40,
-                    child: url != null
+                    child: product.image != null
                         // * Imagen del producto, mediante el enlace guardado al crearlo
                         ? Image.network(
                             product.image!,

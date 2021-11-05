@@ -28,9 +28,10 @@ class _BodyState extends State<Body> {
     super.initState();
 
     setState(() {
-      productQuery.getProducts().then((value) => value.forEach((element) {
-            productos.add(element);
-          }));
+      productQuery.getProducts().then((productos) {
+        // productos.addAll(productos);
+      });
+
       loadingScreen = false;
     });
   }
