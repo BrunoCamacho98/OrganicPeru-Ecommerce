@@ -38,28 +38,13 @@ class PrincipalState extends State<Principal> {
 
   final UserQuery userQuery = UserQuery();
 
-  final ProductQuery productQuery = ProductQuery();
-
   int _selectDrawerItem = -1;
-
-  List<Product> productos = [];
-
-  @override
-  void initState() {
-    setState(() {
-      productQuery.getProducts().then((value) => productos = value);
-    });
-
-    super.initState();
-  }
 
 // * Switch para cambio de vista, según lo seleccionado en el menú lateral
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case -1:
-        return Body(
-          productos: productos,
-        );
+        return Body();
       case 0:
         return CreateProduct(user: user);
       case 1:
