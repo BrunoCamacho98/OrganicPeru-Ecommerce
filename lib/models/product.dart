@@ -32,7 +32,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => _productFromJson(json);
 
   getName() {
-    return name;
+    return (name != null ? name! : " - ");
   }
 
   getDescription() {
@@ -40,7 +40,7 @@ class Product {
   }
 
   getPrice() {
-    return 'S/. ' + price!;
+    return 'S/. ' + (price != null ? price! : " - ");
   }
 
   getWeight() {

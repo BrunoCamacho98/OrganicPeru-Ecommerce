@@ -6,7 +6,7 @@ import 'package:organic/models/product.dart';
 class Recomends extends StatelessWidget {
   Recomends({Key? key, required this.productos}) : super(key: key);
 
-  List<Product> productos = [];
+  List<Product> productos = <Product>[];
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +15,7 @@ class Recomends extends StatelessWidget {
       child: Row(
         children: productos.map((producto) {
           return RecomendPlantCard(
-            image: producto.image,
-            title: producto.name,
             country: "Perú",
-            price: producto.getPrice(),
             product: producto,
             press: () {
               toDetailProduct(context, producto);
@@ -32,17 +29,10 @@ class Recomends extends StatelessWidget {
 
 class RecomendPlantCard extends StatelessWidget {
   const RecomendPlantCard(
-      {Key? key,
-      this.image,
-      this.title,
-      this.country,
-      this.price,
-      this.press,
-      required this.product})
+      {Key? key, this.country, this.press, required this.product})
       : super(key: key);
 
-  final String? image, title, country;
-  final String? price;
+  final String? country;
   final Function? press;
   final Product product;
 
@@ -63,9 +53,13 @@ class RecomendPlantCard extends StatelessWidget {
                   product.image!,
                   height: 240,
                 )
-              : Image.asset(
-                  "assets/images/saco-organic.jpeg",
+              : Container(
+                  width: 240,
                   height: 240,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(0.0),
+                    color: Colors.grey,
+                  ),
                 ),
           GestureDetector(
             onTap: () async => toDetailProduct(context, product),
@@ -95,7 +89,7 @@ class RecomendPlantCard extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 1.5),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      title!.toUpperCase(),
+                      product.getName().toUpperCase(),
                       style: const TextStyle(fontSize: 13),
                       textAlign: TextAlign.start,
                       softWrap: true,
@@ -108,7 +102,7 @@ class RecomendPlantCard extends StatelessWidget {
                     width: 58,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      price!,
+                      product.getPrice(),
                       style:
                           const TextStyle(fontSize: 13.5, color: kPrimaryColor),
                       textAlign: TextAlign.start,

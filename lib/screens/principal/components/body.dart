@@ -19,21 +19,23 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   final ProductQuery productQuery = ProductQuery();
 
-  List<Product> productos = [];
+  List<Product> productos = <Product>[];
 
   bool loadingScreen = true;
 
   @override
   void initState() {
-    super.initState();
-
     setState(() {
       productQuery.getProducts().then((productos) {
-        // productos.addAll(productos);
+        setState(() {
+          this.productos.addAll(productos);
+        });
       });
 
-      loadingScreen = false;
+      this.loadingScreen = false;
     });
+
+    super.initState();
   }
 
   @override
