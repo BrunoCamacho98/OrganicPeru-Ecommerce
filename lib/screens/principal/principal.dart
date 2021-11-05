@@ -46,11 +46,11 @@ class PrincipalState extends State<Principal> {
 
   @override
   void initState() {
-    super.initState();
-
     setState(() {
       productQuery.getProducts().then((value) => productos = value);
     });
+
+    super.initState();
   }
 
 // * Switch para cambio de vista, según lo seleccionado en el menú lateral

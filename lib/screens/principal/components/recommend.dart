@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
-import 'package:organic/screens/principal/details/details_screen.dart';
-import 'package:organic/util/queries/product/product_query.dart';
 
 class Recomends extends StatelessWidget {
   Recomends({Key? key, required this.productos}) : super(key: key);
@@ -20,13 +19,9 @@ class Recomends extends StatelessWidget {
             title: producto.name,
             country: "Perú",
             price: producto.getPrice(),
+            product: producto,
             press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsScreen(),
-                ),
-              );
+              toDetailProduct(context, producto);
             },
           );
         }).toList(),
@@ -36,18 +31,20 @@ class Recomends extends StatelessWidget {
 }
 
 class RecomendPlantCard extends StatelessWidget {
-  const RecomendPlantCard({
-    Key? key,
-    this.image,
-    this.title,
-    this.country,
-    this.price,
-    this.press,
-  }) : super(key: key);
+  const RecomendPlantCard(
+      {Key? key,
+      this.image,
+      this.title,
+      this.country,
+      this.price,
+      this.press,
+      required this.product})
+      : super(key: key);
 
   final String? image, title, country;
   final String? price;
   final Function? press;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +58,9 @@ class RecomendPlantCard extends StatelessWidget {
       height: 300,
       child: Column(
         children: <Widget>[
-          image != null
+          product.image != null
               ? Image.network(
-                  image as String,
+                  product.image!,
                   height: 240,
                 )
               : Image.asset(
@@ -71,7 +68,7 @@ class RecomendPlantCard extends StatelessWidget {
                   height: 240,
                 ),
           GestureDetector(
-            onTap: () {},
+            onTap: () async => toDetailProduct(context, product),
             child: Container(
               padding: const EdgeInsets.all(kDefaultPadding / 2),
               height: 50,

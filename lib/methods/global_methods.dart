@@ -1,9 +1,11 @@
 // * SERVICES
 import 'package:flutter/material.dart';
 import 'package:organic/main.dart';
+import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 // * SCREEN
 import 'package:organic/screens/principal/principal.dart';
+import 'package:organic/screens/principal/product/detail_product.dart';
 
 // * Go to view Principal.dart
 void toPrincipal(BuildContext context, UserLogin? user) async {
@@ -15,4 +17,9 @@ void toPrincipal(BuildContext context, UserLogin? user) async {
 void toMain(BuildContext context) async {
   await Navigator.push(
       context, MaterialPageRoute(builder: (context) => const MyApp()));
+}
+
+void toDetailProduct(BuildContext context, Product product) async {
+  await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => DetailProduct(product: product)));
 }

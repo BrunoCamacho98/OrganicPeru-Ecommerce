@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
-import 'package:organic/screens/principal/product/detail_product.dart';
+import 'package:organic/screens/principal/product/modal_product.dart';
 import 'package:organic/screens/principal/product/product_card.dart';
 
 class ListProduct extends StatefulWidget {
@@ -91,7 +91,7 @@ class _ListProductState extends State<ListProduct> {
     showDialog(
         context: context,
         builder: (buildcontext) {
-          return ProductDetail(producto: producto, updateData: updateData);
+          return ProductModal(producto: producto, updateData: updateData);
         });
   }
 
