@@ -136,15 +136,11 @@ class _DetailProductState extends State<DetailProduct> {
                         fontWeight: FontWeight.w500),
                     textAlign: TextAlign.start,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 25),
                   Text(
                     product.getDescription(),
                     style: const TextStyle(fontSize: 18, color: Colors.black54),
                     textAlign: TextAlign.start,
-                    softWrap: true,
-                    maxLines: 1,
-                    textWidthBasis: TextWidthBasis.parent,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -152,16 +148,15 @@ class _DetailProductState extends State<DetailProduct> {
           ),
         ),
         Positioned(
-          top: size.height * 0.12,
+          bottom: size.height * 0.37,
           right: 20,
           width: size.width * 0.5,
-          height: size.height * 0.4,
+          height: size.height * 0.36,
           child: product.image != null
               // * Imagen del producto, mediante el enlace guardado al crearlo
-              ? Image.network(
-                  product.image!,
-                  width: 100,
-                  height: 100,
+              ? Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Image.network(product.image!),
                 )
               // * En caso no tenga una imagen guardada aparecerá este elemento
               : Container(
