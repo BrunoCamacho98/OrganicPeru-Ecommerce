@@ -122,14 +122,24 @@ class ProductCard extends StatelessWidget {
         height: 1,
         color: Colors.white,
       ),
-      onChanged: (value) {},
+      onChanged: (value) {
+        if (value!.key == const Key("detailOption")) {
+          detailProduct(product);
+        }
+
+        if (value.key == const Key("removeOption")) {
+          removeProduct(product.id);
+        }
+      },
       items: <Widget>[
         IconButton(
+            key: const Key("detailOption"),
             onPressed: () => detailProduct(product),
             alignment: Alignment.center,
             color: Colors.blueAccent,
             icon: const Icon(Icons.edit_outlined)),
         IconButton(
+            key: const Key("removeOption"),
             onPressed: () async => removeProduct(product.id),
             alignment: Alignment.center,
             color: Colors.redAccent,

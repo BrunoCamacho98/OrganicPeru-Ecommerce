@@ -99,7 +99,9 @@ class _ProductModalState extends State<ProductModal> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(producto.getName()),
-      insetPadding: const EdgeInsets.all(8),
+      insetPadding: const EdgeInsets.all(5),
+      actionsAlignment: MainAxisAlignment.center,
+      backgroundColor: kPrimaryWhite,
       titleTextStyle: const TextStyle(
           color: Colors.black54,
           fontSize: 18,

@@ -69,11 +69,13 @@ class _ListProductState extends State<ListProduct> {
 
 // ? Función para eliminar productos
   Future removeProduct(String productId) async {
-    products.removeWhere((element) => element.id == productId);
-
     await productReference
         .doc(productId)
         .delete(); // * Eliminar producto mediante uso id
+
+    setState(() {
+      products.removeWhere((element) => element.id == productId);
+    });
   }
 
   Future updateData(Product producto) async {
