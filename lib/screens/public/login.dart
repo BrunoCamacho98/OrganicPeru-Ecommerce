@@ -80,19 +80,19 @@ class _LoginState extends State<Login> {
                   // * Caja de texto para ingreso de email
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.always,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (val) => val!.isEmpty ||
                             !val.contains("@") ||
                             val.endsWith("@") ||
                             val.endsWith(".")
-                        ? "Enter a valid eamil"
+                        ? "Enter a valid email"
                         : null,
                     controller: _emailController,
                     decoration: InputDecoration(
                         hintText: "Correo electrónico",
                         prefixIcon: const Icon(Icons.mail),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5))),
+                            borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.black26))),
                   ),
                   const SizedBox(height: 30),
                   // * Caja de texto para ingreso de contraseña
@@ -138,13 +138,42 @@ class _LoginState extends State<Login> {
                     child: loading
                         ? const CircularProgressIndicator()
                         : const Text(
-                            "Login",
+                            "Iniciar sesión",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                   ),
+                  const SizedBox(height: 10),
+                  MaterialButton(
+                    onPressed: () {},
+                    height: 55,
+                    minWidth: double.infinity,
+                    color: kBackgroundColor,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(color: Colors.black12)
+                    ),
+                    elevation: 0,
+                    child: loading
+                        ? const CircularProgressIndicator()
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image.asset("assets/icons/google_icon.png", height: 20),
+                              const SizedBox(width: 10,),
+                              const Text("Iniciar sesión con Google",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87
+                            ))
+                            ]
+                          ),
+                  ),
+                  const SizedBox(height: 10),
                   // * Botón de envio a la vista de registro
                   MaterialButton(
                     onPressed: () => widget.toggleScreen(),

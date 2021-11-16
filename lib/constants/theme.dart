@@ -25,17 +25,17 @@ const MaterialColor kprimarySwatch = MaterialColor(
 );
 
 const MaterialColor kprimaryWhiteSwatch = MaterialColor(
-  0xFFF9F8FD,
+  0xFFd9d9d9,
   <int, Color>{
-    50: Color(0xFFF9F8FD), //10%
-    100: Color(0xFFF9F8FD), //20%
-    200: Color(0xFFF9F8FD), //30%
-    300: Color(0xFFF9F8FD), //40%
-    400: Color(0xFFF9F8FD), //50%
-    500: Color(0xFFF9F8FD), //60%
-    600: Color(0xFFF9F8FD), //70%
-    700: Color(0xFFF9F8FD), //80%
-    800: Color(0xFFF9F8FD), //90%
-    900: Color(0xFFF9F8FD),
+    50: Color(0xFFF9F9FD), //10%
+    100: Color(0xFFF4F4F4), //20%
+    200: Color(0xFFF9F9F9), //30%
+    300: Color(0xFFe2e2e2), //40%
+    400: Color(0xFFe8e8e8), //50%
+    500: Color(0xFFe6e6e6), //60%
+    600: Color(0xFFdbd1d9), //70%
+    700: Color(0xFFdbd4d9), //80%
+    800: Color(0xFFd9d7d9), //90%
+    900: Color(0xFFd9d9d9),
   },
 );

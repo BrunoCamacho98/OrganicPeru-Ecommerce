@@ -48,9 +48,7 @@ class PrincipalState extends State<Principal> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case -1:
-        return Body(
-          viewDetail: _onSelectItem,
-        );
+        return Body(viewDetail: _onSelectItem, user: user!);
       case 0:
         return CreateProduct(user: user);
       case 1:
@@ -99,23 +97,23 @@ class PrincipalState extends State<Principal> {
           size: 24,
           opacity: .5),
       backgroundColor: _selectDrawerItem == 6 ? kPrimaryColor : kPrimaryWhite,
-      actions: _selectDrawerItem == 6
-          ? [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: Colors.white.withOpacity(0.13),
-                    mini: true,
-                    elevation: 0.0,
-                    child: const Icon(
-                      Icons.shopping_cart,
-                      size: 20,
-                      color: Colors.white,
-                    )),
-              )
-            ]
-          : [],
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: _selectDrawerItem == 6
+                  ? Colors.white.withOpacity(0.13)
+                  : Colors.black.withOpacity(0.13),
+              mini: true,
+              elevation: 0.0,
+              child: Icon(
+                Icons.shopping_cart,
+                size: 20,
+                color: _selectDrawerItem == 6 ? Colors.white : Colors.black54,
+              )),
+        )
+      ],
     );
   }
 
@@ -141,7 +139,7 @@ class PrincipalState extends State<Principal> {
               backgroundColor: kPrimaryColor,
               child: Text(
                 (user?.email as String).substring(0, 1).toUpperCase(),
-                style: const TextStyle(fontSize: 40.0),
+                style: const TextStyle(fontSize: 40.0, color: kPrimaryWhite),
               ),
             ),
           ),

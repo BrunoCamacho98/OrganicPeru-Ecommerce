@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 // * Designar los colores usados en la aplicación
                 theme: ThemeData(
-                  primarySwatch: kprimaryWhiteSwatch,
+                  primarySwatch: kprimarySwatch,
                   primaryColor: kPrimaryWhite,
                   textTheme: Theme.of(context).textTheme.apply(
                       bodyColor: Colors.black87,
