@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/models/product.dart';
-import 'package:organic/screens/principal/components/featured.dart';
 import 'package:organic/screens/principal/components/recommend.dart';
 import 'package:organic/screens/principal/components/title_with_more_bbtn.dart';
 import 'package:organic/util/queries/product/product_query.dart';
@@ -32,6 +31,7 @@ class _BodyState extends State<Body> {
         });
       });
 
+      // ignore: unnecessary_this
       this.loadingScreen = false;
     });
 
@@ -55,7 +55,8 @@ class _BodyState extends State<Body> {
           TitleWithMoreBtn(title: "Recomendado", press: () {}),
           Recomends(productos: productos),
           TitleWithMoreBtn(title: "Destacados", press: () {}),
-          const Featured(),
+          Recomends(productos: productos),
+          // const Featured(),
           const SizedBox(height: kDefaultPadding),
         ],
       ),

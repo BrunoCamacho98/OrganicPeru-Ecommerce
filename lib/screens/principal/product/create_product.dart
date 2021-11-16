@@ -16,9 +16,11 @@ import 'package:organic/models/user.dart';
 
 class CreateProduct extends StatefulWidget {
   final UserLogin? user;
-  CreateProduct({this.user});
+  // ignore: use_key_in_widget_constructors
+  const CreateProduct({this.user});
 
   @override
+  // ignore: no_logic_in_create_state
   _CreateProductState createState() => _CreateProductState(user: user);
 }
 

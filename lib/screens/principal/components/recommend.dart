@@ -3,6 +3,7 @@ import 'package:organic/constants/theme.dart';
 import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
 
+// ignore: must_be_immutable
 class Recomends extends StatelessWidget {
   Recomends({Key? key, required this.productos}) : super(key: key);
 

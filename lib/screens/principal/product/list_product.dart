@@ -10,9 +10,11 @@ import 'package:organic/screens/principal/product/product_card.dart';
 class ListProduct extends StatefulWidget {
   final UserLogin? user;
 
-  ListProduct({this.user});
+  // ignore: use_key_in_widget_constructors
+  const ListProduct({this.user});
 
   @override
+  // ignore: no_logic_in_create_state
   _ListProductState createState() => _ListProductState(user: user);
 }
 
@@ -24,11 +26,6 @@ class _ListProductState extends State<ListProduct> {
 
   // * Lista de productos
   List<Product> products = [];
-
-  // * Referencia a la colección de Product, detectando cada cambio realizado en Firestore
-  final Stream<QuerySnapshot> _productStream = FirebaseFirestore.instance
-      .collection('Product')
-      .snapshots(includeMetadataChanges: true);
 
   // * Variable usado para la obtención de los datos de los archivos en el servicio de Storage
   UploadTask? task;
@@ -99,80 +96,66 @@ class _ListProductState extends State<ListProduct> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // * Permite actualización de elementos al detectar un cambio en la colección
-    return StreamBuilder<QuerySnapshot>(
-        stream: _productStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
-          }
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 0 + kDefaultPadding,
+              ),
+              height: size.height * 0.1 - 25,
+              decoration: const BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(36),
+                  bottomRight: Radius.circular(36),
+                ),
+              ),
+              child: Row(
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(
-                      left: kDefaultPadding,
-                      right: kDefaultPadding,
-                      bottom: 0 + kDefaultPadding,
-                    ),
-                    height: size.height * 0.1 - 25,
-                    decoration: const BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(36),
-                        bottomRight: Radius.circular(36),
-                      ),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          'Mis Productos!',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                        ),
-                        const Spacer(),
-                        // Image.asset("assets/images/logo.png")
-                      ],
-                    ),
+                  Text(
+                    'Mis Productos!',
+                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: products.isNotEmpty
-                          ?
-                          // * Lista de todos los productos del usuario
-                          products.map((product) {
-                              // * Retorno de la carta de detalle del producto
-                              return ProductCard(
-                                product: product,
-                                removeProduct: removeProduct,
-                                detailProduct: showProductModal,
-                              );
-                            }).toList()
-                          : [
-                              // * Vista en caso no tenga productos
-                              Container(
-                                child: const Text("No tiene productos"),
-                                padding: const EdgeInsets.all(5),
-                                margin: const EdgeInsets.all(5),
-                                alignment: Alignment.center,
-                                // * Dar valor al height del elemento obteniendo el tamaño actual de la pantalla
-                                height: MediaQuery.of(context).size.height / 2,
-                              )
-                            ]),
+                  const Spacer(),
+                  // Image.asset("assets/images/logo.png")
                 ],
               ),
             ),
-          );
-        });
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: products.isNotEmpty
+                    ?
+                    // * Lista de todos los productos del usuario
+                    products.map((product) {
+                        // * Retorno de la carta de detalle del producto
+                        return ProductCard(
+                          product: product,
+                          removeProduct: removeProduct,
+                          detailProduct: showProductModal,
+                        );
+                      }).toList()
+                    : [
+                        // * Vista en caso no tenga productos
+                        Container(
+                          child: const Text("No tiene productos"),
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          // * Dar valor al height del elemento obteniendo el tamaño actual de la pantalla
+                          height: MediaQuery.of(context).size.height / 2,
+                        )
+                      ]),
+          ],
+        ),
+      ),
+    );
   }
 }

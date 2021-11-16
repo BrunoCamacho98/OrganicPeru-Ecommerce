@@ -13,6 +13,8 @@ class FirebaseApi {
 
       return ref.putFile(file);
     } on FirebaseException catch (e) {
+      // ignore: avoid_print
+      print(e);
       return null;
     }
   }
@@ -24,6 +26,8 @@ class FirebaseApi {
 
       return ref.putData(data);
     } on FirebaseException catch (e) {
+      // ignore: avoid_print
+      print(e);
       return null;
     }
   }

@@ -1,12 +1,12 @@
 // * SERVICES
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
 // * MODEL
 import 'package:organic/models/product.dart';
 
+// ignore: must_be_immutable
 class ProductCard extends StatelessWidget {
   // * Parametros de la vista
   // ? key: Clave de la vista, no es necesario colocarle un valor

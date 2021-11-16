@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/models/user.dart';
 
+// ignore: must_be_immutable
 class Profile extends StatefulWidget {
   final UserLogin? user;
   Function updateUser;
@@ -12,6 +13,7 @@ class Profile extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   _ProfileState createState() =>
+      // ignore: no_logic_in_create_state
       _ProfileState(user: user, updateUser: updateUser);
 }
 
@@ -64,8 +66,8 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Stack(
+                    clipBehavior: Clip.none,
                     alignment: Alignment.center,
-                    overflow: Overflow.visible,
                     children: [
                       Container(
                         height: 95,

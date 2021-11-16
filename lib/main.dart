@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             // * Vista en caso haya algun error con firebase
-            return ErrorWidget();
+            return const ErrorWidget();
           } else if (snapshot.hasData) {
             // * Vista principal
             return MultiProvider(
@@ -51,12 +51,12 @@ class MyApp extends StatelessWidget {
                 ),
                 debugShowCheckedModeBanner: false,
                 // * Vista de Authentication (login y registro), en caso el usuario no este logeado
-                home: Authentication(),
+                home: const Authentication(),
               ),
             );
           } else {
             // * Vista de carga: Mientas se espera a que termine de cargar las vistas
-            return Loading();
+            return const Loading();
           }
         });
   }
@@ -64,6 +64,8 @@ class MyApp extends StatelessWidget {
 
 // * Vista de error
 class ErrorWidget extends StatelessWidget {
+  const ErrorWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +79,8 @@ class ErrorWidget extends StatelessWidget {
 
 // * Vista de carga
 class Loading extends StatelessWidget {
+  const Loading({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

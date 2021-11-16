@@ -2,10 +2,11 @@
 import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
+import 'package:organic/screens/principal/product/detail_product.dart';
+import 'package:organic/screens/principal/sales/sales_user_list.dart';
 import 'package:organic/screens/principal/user/profile.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'package:organic/util/queries/product/product_query.dart';
 import 'package:organic/util/queries/user/user_query.dart';
 import 'package:provider/provider.dart';
 // * FIREBASE
@@ -17,15 +18,17 @@ import 'package:organic/screens/principal/components/body.dart';
 import 'package:organic/screens/principal/product/create_product.dart';
 import 'package:organic/screens/principal/product/list_product.dart';
 
+// ignore: must_be_immutable
 class Principal extends StatefulWidget {
   UserLogin? user;
 
   // * Parametros de la vista
   // ? User: datos del usuario logeado
-  Principal({this.user});
+  Principal({Key? key, this.user}) : super(key: key);
 
   // * Referenciando al estado
   @override
+  // ignore: no_logic_in_create_state
   PrincipalState createState() => PrincipalState(user: user);
 }
 
@@ -39,12 +42,13 @@ class PrincipalState extends State<Principal> {
   final UserQuery userQuery = UserQuery();
 
   int _selectDrawerItem = -1;
+  Product? producto;
 
 // * Switch para cambio de vista, según lo seleccionado en el menú lateral
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case -1:
-        return Body();
+        return const Body();
       case 0:
         return CreateProduct(user: user);
       case 1:
@@ -56,16 +60,22 @@ class PrincipalState extends State<Principal> {
           user: user,
           updateUser: updateUser,
         );
+
+      case 4:
+        return const SalesUserList();
       case 5:
-        return Authentication();
+        return const Authentication();
+      case 6:
+        return DetailProduct(product: producto!);
     }
   }
 
   // * Cambio de valor en la variable utilizada para validar que Vista mostrar
-  _onSelectItem(int pos) {
+  _onSelectItem(int pos, Product? product) {
     Navigator.of(context).pop();
     setState(() {
       _selectDrawerItem = pos;
+      producto = product;
     });
   }
 
@@ -117,7 +127,7 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.home),
               selected: (-1 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(-1);
+                _onSelectItem(-1, null);
               }),
           // * Lista de todos los productos agregados por el usuario
           ListTile(
@@ -125,7 +135,7 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.production_quantity_limits_rounded),
               selected: (2 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(2);
+                _onSelectItem(2, null);
               }),
           // * Creación de productos
           ListTile(
@@ -133,7 +143,14 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.add),
               selected: (1 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(1);
+                _onSelectItem(1, null);
+              }),
+          ListTile(
+              title: const Text('Mis compras'),
+              leading: const Icon(Icons.production_quantity_limits_rounded),
+              selected: (4 == _selectDrawerItem),
+              onTap: () {
+                _onSelectItem(4, null);
               }),
           const Divider(),
 
@@ -143,7 +160,7 @@ class PrincipalState extends State<Principal> {
               leading: const Icon(Icons.account_circle),
               selected: (3 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(3);
+                _onSelectItem(3, null);
               }),
           // * Cierre de sesión
           ListTile(

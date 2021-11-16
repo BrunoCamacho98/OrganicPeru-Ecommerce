@@ -19,6 +19,7 @@ class ProductModal extends StatefulWidget {
 
   @override
   _ProductModalState createState() =>
+      // ignore: no_logic_in_create_state
       _ProductModalState(producto: producto, updateData: updateData);
 }
 

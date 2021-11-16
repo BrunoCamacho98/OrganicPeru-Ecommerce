@@ -47,7 +47,7 @@ class UserLogin {
   }
 
   getDNI() {
-    return dni != null ? dni : "";
+    return dni ?? "";
   }
 
   getEmail() {
@@ -55,7 +55,7 @@ class UserLogin {
   }
 
   getAddress() {
-    return address != null ? address : "";
+    return address ?? "";
   }
 
   getUID() {

@@ -3,6 +3,8 @@ import 'package:organic/screens/public/login.dart';
 import 'package:organic/screens/public/register.dart';
 
 class Authentication extends StatefulWidget {
+  const Authentication({Key? key}) : super(key: key);
+
   @override
   _AuthenticationState createState() => _AuthenticationState();
 }
