@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:organic/constants/theme.dart';
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
 import 'package:organic/services/authentification/auth_services.dart';
@@ -43,10 +44,11 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 // * Designar los colores usados en la aplicación
                 theme: ThemeData(
-                  primarySwatch: kprimarySwatch,
-                  primaryColor: kPrimaryColor,
-                  textTheme:
-                      Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+                  primarySwatch: kprimaryWhiteSwatch,
+                  primaryColor: kPrimaryWhite,
+                  textTheme: Theme.of(context).textTheme.apply(
+                      bodyColor: Colors.black87,
+                      fontFamily: GoogleFonts.montserrat().fontFamily),
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
                 debugShowCheckedModeBanner: false,

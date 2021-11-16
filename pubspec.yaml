@@ -44,6 +44,8 @@ dependencies:
   firebase_storage:
   cloud_firestore:
 
+  google_fonts: ^2.1.0
+
   # image_cropper:
   file_picker:
 

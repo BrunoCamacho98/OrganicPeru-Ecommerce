@@ -4,19 +4,22 @@ import 'package:organic/models/product.dart';
 import 'package:organic/screens/principal/components/recommend.dart';
 import 'package:organic/screens/principal/components/title_with_more_bbtn.dart';
 import 'package:organic/util/queries/product/product_query.dart';
-// Components
-import 'header_with_seachbox.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  final Function viewDetail;
+
+  const Body({Key? key, required this.viewDetail}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  _BodyState createState() => _BodyState();
+  _BodyState createState() => _BodyState(viewDetail: viewDetail);
 }
 
 class _BodyState extends State<Body> {
+  _BodyState({required this.viewDetail});
+
   final ProductQuery productQuery = ProductQuery();
+  final Function viewDetail;
 
   List<Product> productos = <Product>[];
 
@@ -41,21 +44,26 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     //Provee el tamaño total (height y width) de la pantalla
-    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          loadingScreen
-              ? const CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.blueAccent,
-                )
-              : HeaderWithSearchBox(size: size),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+            child: Text(
+              'Hi Organic',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Montserrat',
+                  fontSize: 28),
+            ),
+          ),
+          // : HeaderWithSearchBox(size: size),
           TitleWithMoreBtn(title: "Recomendado", press: () {}),
-          Recomends(productos: productos),
+          Recomends(productos: productos, viewDetail: viewDetail),
           TitleWithMoreBtn(title: "Destacados", press: () {}),
-          Recomends(productos: productos),
+          Recomends(productos: productos, viewDetail: viewDetail),
           // const Featured(),
           const SizedBox(height: kDefaultPadding),
         ],

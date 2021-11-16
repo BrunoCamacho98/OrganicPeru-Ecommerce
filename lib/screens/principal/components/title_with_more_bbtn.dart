@@ -55,19 +55,19 @@ class TitleWithCustomUnderline extends StatelessWidget {
             padding: const EdgeInsets.only(left: kDefaultPadding / 4),
             child: Text(
               text,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              margin: const EdgeInsets.only(right: kDefaultPadding / 4),
-              height: 7,
-              color: kPrimaryColor.withOpacity(0.2),
-            ),
-          )
+          // Positioned(
+          //   bottom: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: Container(
+          //     margin: const EdgeInsets.only(right: kDefaultPadding / 4),
+          //     height: 7,
+          //     color: kPrimaryColor.withOpacity(0.2),
+          //   ),
+          // )
         ],
       ),
     );

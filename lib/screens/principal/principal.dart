@@ -48,7 +48,9 @@ class PrincipalState extends State<Principal> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case -1:
-        return const Body();
+        return Body(
+          viewDetail: _onSelectItem,
+        );
       case 0:
         return CreateProduct(user: user);
       case 1:
@@ -72,7 +74,7 @@ class PrincipalState extends State<Principal> {
 
   // * Cambio de valor en la variable utilizada para validar que Vista mostrar
   _onSelectItem(int pos, Product? product) {
-    Navigator.of(context).pop();
+    if (product == null) Navigator.of(context).pop();
     setState(() {
       _selectDrawerItem = pos;
       producto = product;
@@ -92,6 +94,28 @@ class PrincipalState extends State<Principal> {
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
+      iconTheme: IconThemeData(
+          color: _selectDrawerItem == 6 ? Colors.white : Colors.black54,
+          size: 24,
+          opacity: .5),
+      backgroundColor: _selectDrawerItem == 6 ? kPrimaryColor : kPrimaryWhite,
+      actions: _selectDrawerItem == 6
+          ? [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: FloatingActionButton(
+                    onPressed: () {},
+                    backgroundColor: Colors.white.withOpacity(0.13),
+                    mini: true,
+                    elevation: 0.0,
+                    child: const Icon(
+                      Icons.shopping_cart,
+                      size: 20,
+                      color: Colors.white,
+                    )),
+              )
+            ]
+          : [],
     );
   }
 
@@ -114,58 +138,99 @@ class PrincipalState extends State<Principal> {
             accountName: Text(user?.name as String),
             accountEmail: Text(user?.email as String),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: kBackgroundColor,
+              backgroundColor: kPrimaryColor,
               child: Text(
                 (user?.email as String).substring(0, 1).toUpperCase(),
                 style: const TextStyle(fontSize: 40.0),
               ),
             ),
           ),
+          const Divider(
+            thickness: 0.9,
+          ),
           // * Vista principal, listado de todos los productos
           ListTile(
-              title: const Text('Home'),
-              leading: const Icon(Icons.home),
+              title: Text('Home',
+                  style: TextStyle(
+                      color: -1 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.home,
+                  color:
+                      -1 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (-1 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(-1, null);
               }),
           // * Lista de todos los productos agregados por el usuario
           ListTile(
-              title: const Text('Mis productos'),
-              leading: const Icon(Icons.production_quantity_limits_rounded),
+              title: Text('Mis productos',
+                  style: TextStyle(
+                      color: 2 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.production_quantity_limits_rounded,
+                  color:
+                      2 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (2 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(2, null);
               }),
           // * Creación de productos
           ListTile(
-              title: const Text('Crear producto'),
-              leading: const Icon(Icons.add),
+              title: Text('Crear producto',
+                  style: TextStyle(
+                      color: 1 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.add,
+                  color:
+                      1 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (1 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(1, null);
               }),
           ListTile(
-              title: const Text('Mis compras'),
-              leading: const Icon(Icons.production_quantity_limits_rounded),
+              title: Text('Mis compras',
+                  style: TextStyle(
+                      color: 4 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.production_quantity_limits_rounded,
+                  color:
+                      4 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (4 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(4, null);
               }),
-          const Divider(),
+          const Divider(
+            thickness: 0.9,
+          ),
 
           // * Perfil de usuario
           ListTile(
-              title: const Text('Perfil'),
-              leading: const Icon(Icons.account_circle),
+              title: Text('Perfil',
+                  style: TextStyle(
+                      color: 3 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.account_circle,
+                  color:
+                      3 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (3 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(3, null);
               }),
           // * Cierre de sesión
           ListTile(
-              title: const Text('Cerrar sesión'),
-              leading: const Icon(Icons.exit_to_app),
+              title: Text('Cerrar sesión',
+                  style: TextStyle(
+                      color: 5 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black87)),
+              leading: Icon(Icons.exit_to_app,
+                  color:
+                      5 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
               selected: (5 == _selectDrawerItem),
               onTap: () {
                 logoutProvider.logout();

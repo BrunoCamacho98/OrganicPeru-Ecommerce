@@ -149,7 +149,7 @@ class _CreateProductState extends State<CreateProduct> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding, vertical: 50),
+            horizontal: kDefaultPadding, vertical: 20),
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +159,7 @@ class _CreateProductState extends State<CreateProduct> {
                 "Nuevo producto",
                 style: TextStyle(
                   fontSize: 25,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 30),
@@ -168,23 +168,29 @@ class _CreateProductState extends State<CreateProduct> {
                 children: <Widget>[
                   file != null
                       // * Imagen subida del producto
-                      ? Image.file(file as File, height: 100.0, width: 100.0)
+                      ? Image.file(file as File, height: 120.0, width: 120.0)
                       // * Elemento por defecto en caso no haya ninguna imagen seleccionada
                       : Container(
-                          width: 100,
-                          height: 100,
+                          width: 120,
+                          height: 120,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
+                            borderRadius: BorderRadius.circular(100.0),
                             color: Colors.grey,
                           ),
                         ),
                   Padding(
                     padding: const EdgeInsets.only(top: 60.0),
                     // * Botón para abrir galería y selecciona imagne
-                    child: IconButton(
-                      onPressed: selectFile,
-                      icon: const Icon(
-                        Icons.camera_alt,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: IconButton(
+                        onPressed: selectFile,
+                        icon:
+                            const Icon(Icons.camera_alt, color: Colors.black87),
                       ),
                     ),
                   ),

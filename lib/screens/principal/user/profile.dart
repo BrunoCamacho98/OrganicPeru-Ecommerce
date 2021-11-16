@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   height: size.height * 0.12 - 27,
                   decoration: const BoxDecoration(
-                    color: kPrimaryColor,
+                    color: kPrimaryWhite,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(36),
                       bottomRight: Radius.circular(36),
@@ -110,12 +110,12 @@ class _ProfileState extends State<Profile> {
                                 .substring(0, 1)
                                 .toUpperCase(),
                             style: const TextStyle(
-                                fontSize: 35, color: kPrimaryColor),
+                                fontSize: 35, color: kPrimaryWhite),
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black12),
                             borderRadius: BorderRadius.circular(180),
-                            color: Colors.white,
+                            color: kPrimaryColor,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.3),

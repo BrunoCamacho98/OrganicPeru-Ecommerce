@@ -109,9 +109,9 @@ class _ListProductState extends State<ListProduct> {
                 right: kDefaultPadding,
                 bottom: 0 + kDefaultPadding,
               ),
-              height: size.height * 0.1 - 25,
+              height: size.height * 0.12 - 20,
               decoration: const BoxDecoration(
-                color: kPrimaryColor,
+                color: kPrimaryWhite,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(36),
                   bottomRight: Radius.circular(36),
@@ -120,9 +120,9 @@ class _ListProductState extends State<ListProduct> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    'Mis Productos!',
+                    'Mis Productos',
                     style: Theme.of(context).textTheme.headline5?.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                        color: Colors.black87, fontWeight: FontWeight.w500),
                   ),
                   const Spacer(),
                   // Image.asset("assets/images/logo.png")
