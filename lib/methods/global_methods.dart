@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:organic/main.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
+import 'package:organic/screens/principal/components/modal_sale.dart';
 // * SCREEN
 import 'package:organic/screens/principal/principal.dart';
 import 'package:organic/screens/principal/product/detail_product.dart';
@@ -22,4 +23,12 @@ void toMain(BuildContext context) async {
 void toDetailProduct(BuildContext context, Product product) async {
   await Navigator.push(context,
       MaterialPageRoute(builder: (context) => DetailProduct(product: product)));
+}
+
+void showSaleModal(BuildContext context, UserLogin user, Product producto) {
+  showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return ModalSales(producto: producto, user: user);
+      });
 }

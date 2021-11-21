@@ -38,6 +38,7 @@ dependencies:
   meta:
   provider:
 
+  #Firebase
   firebase_auth:
   firebase_core:
   firebase_database:
@@ -46,8 +47,14 @@ dependencies:
 
   google_fonts: ^2.1.0
 
+  #elements widget
+  flutter_spinbox: ^0.7.0
+
   # image_cropper:
   file_picker:
+
+  # connection in realtime
+  socket_io: ^1.0.1
 
 dev_dependencies:
   flutter_test:

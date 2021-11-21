@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
+import 'package:organic/models/user.dart';
 
 // ignore: must_be_immutable
 class Recomends extends StatelessWidget {
-  Recomends({Key? key, required this.productos, required this.viewDetail})
+  Recomends(
+      {Key? key,
+      required this.user,
+      required this.productos,
+      required this.viewDetail})
       : super(key: key);
 
   final Function viewDetail;
+  final UserLogin user;
+
   List<Product> productos = <Product>[];
 
   @override
@@ -17,10 +25,10 @@ class Recomends extends StatelessWidget {
       child: Row(
         children: productos.map((producto) {
           return RecomendPlantCard(
-            country: "Perú",
-            product: producto,
-            press: viewDetail,
-          );
+              country: "Perú",
+              product: producto,
+              press: viewDetail,
+              user: user);
         }).toList(),
       ),
     );
@@ -29,11 +37,16 @@ class Recomends extends StatelessWidget {
 
 class RecomendPlantCard extends StatelessWidget {
   const RecomendPlantCard(
-      {Key? key, this.country, required this.press, required this.product})
+      {Key? key,
+      this.country,
+      required this.user,
+      required this.press,
+      required this.product})
       : super(key: key);
 
   final String? country;
   final Function press;
+  final UserLogin user;
   final Product product;
 
   @override
@@ -135,10 +148,24 @@ class RecomendPlantCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(color: Colors.white60, width: 0.8)),
                   ),
+                ),
+                GestureDetector(
+                  onTap: () => showSaleModal(context, user, product),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.all(4),
+                    child: const Icon(Icons.production_quantity_limits_rounded,
+                        color: Colors.white60),
+                    decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black12, width: 0.8)),
+                  ),
                 )
               ],
             ),
-          )
+          ),
         ],
       ),
     );
