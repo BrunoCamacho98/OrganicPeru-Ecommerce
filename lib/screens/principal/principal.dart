@@ -9,6 +9,7 @@ import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/util/queries/user/user_query.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // * FIREBASE
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
 // * CONSTANT
@@ -100,18 +101,58 @@ class PrincipalState extends State<Principal> {
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: _selectDrawerItem == 6
-                  ? Colors.white.withOpacity(0.13)
-                  : Colors.black.withOpacity(0.13),
-              mini: true,
-              elevation: 0.0,
-              child: Icon(
-                Icons.shopping_cart,
-                size: 20,
-                color: _selectDrawerItem == 6 ? Colors.white : Colors.black54,
-              )),
+          child: StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('Sales').snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                return Stack(children: <Widget>[
+                  FloatingActionButton(
+                    onPressed: () {},
+                    backgroundColor: _selectDrawerItem == 6
+                        ? Colors.white.withOpacity(0.13)
+                        : Colors.black.withOpacity(0.13),
+                    mini: true,
+                    elevation: 0.0,
+                    child: Icon(
+                      Icons.shopping_cart,
+                      size: 20,
+                      color: _selectDrawerItem == 6
+                          ? Colors.white
+                          : Colors.black54,
+                    ),
+                  ),
+                  snapshot.data == null
+                      ? Positioned(
+                          right: 1,
+                          top: 4,
+                          child: Container(
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: _selectDrawerItem == 6
+                                  ? kPrimaryWhite
+                                  : kPrimaryColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                                minWidth: 15,
+                                minHeight: 15,
+                                maxHeight: 15,
+                                maxWidth: 15),
+                            child: Text(
+                              snapshot.data!.docs.length.toString(),
+                              style: TextStyle(
+                                  color: _selectDrawerItem == 6
+                                      ? Colors.black87
+                                      : Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : const SizedBox()
+                ]);
+              }),
         )
       ],
     );

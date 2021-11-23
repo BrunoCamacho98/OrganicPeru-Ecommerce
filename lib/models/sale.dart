@@ -1,25 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:organic/models/creditcard.dart';
 
 class Sale {
-  String? id;
-  String? name;
-  String? description;
-  String? image;
-  String? price;
-  String? weight;
-  String? userId;
+  late String id;
+  late String idUsuario;
+  late String address;
+  late String dateSale;
+  late String state;
+  late String type;
+  late String number;
+  late String cvv;
+  late String name;
+  late String dueDate;
 
   DocumentReference? reference;
 
   Sale(
-      {this.id,
-      this.name,
-      this.description,
-      this.image,
-      this.price,
-      this.weight,
-      this.userId,
+      {required this.id,
+      required this.idUsuario,
+      required this.address,
+      required this.dateSale,
+      required this.state,
+      required this.type,
+      required this.number,
+      required this.cvv,
+      required this.name,
+      required this.dueDate,
       this.reference});
 
   factory Sale.fromSnapshot(QueryDocumentSnapshot snapshot) {
@@ -30,45 +37,49 @@ class Sale {
 
   factory Sale.fromJson(Map<String, dynamic> json) => _saleFromJson(json);
 
-  getName() {
-    return (name != null ? name! : " - ");
+  getCreditCard() {
+    CreditCard credit = CreditCard(
+        type: type, cvv: cvv, name: name, number: number, dueDate: dueDate);
+    return credit;
   }
 
-  getDescription() {
-    return description;
+  getAdress() {
+    return address;
   }
 
-  getPrice() {
-    return 'S/. ' + (price != null ? price! : " - ");
+  getDate() {
+    return DateTime.parse(dateSale);
   }
 
-  getWeight() {
-    return weight;
-  }
-
-  getImageUrl() {
-    return image;
+  getState() {
+    return state;
   }
 
   Sale.fromSnapShot(DataSnapshot snapshot) {
-    id = snapshot.key;
+    id = snapshot.key!;
+    idUsuario = snapshot.value['name'];
+    address = snapshot.value['address'];
+    dateSale = snapshot.value['dateSale'];
+    state = snapshot.value['state'];
+    type = snapshot.value['type'];
+    number = snapshot.value['number'];
+    cvv = snapshot.value['cvv'];
     name = snapshot.value['name'];
-    description = snapshot.value['description'];
-    price = snapshot.value['price'];
-    weight = snapshot.value['weight'];
-    image = snapshot.value['image'];
-    userId = snapshot.value['userId'];
+    dueDate = snapshot.value['dueDate'];
   }
 
   toMapString() {
     Map<String, dynamic> map = {
       'id': id,
+      'idUsuario': idUsuario,
+      'address': address,
+      'dateSale': dateSale,
+      'state': state,
+      'type': type,
+      'number': number,
+      'cvv': cvv,
       'name': name,
-      'description': description,
-      'weight': weight,
-      'price': price,
-      'userId': userId,
-      'image': image
+      'dueDate': dueDate
     };
 
     return map;
@@ -78,10 +89,13 @@ class Sale {
 Sale _saleFromJson(Map<String, dynamic> json) {
   return Sale(
       id: json['id'],
+      idUsuario: json['idUsuario'],
+      address: json['address'],
+      dateSale: json['dateSale'],
+      state: json['state'],
+      type: json['type'],
+      number: json['number'],
+      cvv: json['cvv'],
       name: json['name'],
-      description: json['description'],
-      image: json['image'],
-      price: json['price'],
-      weight: json['weight'],
-      userId: json['userId']);
+      dueDate: json['dueDate']);
 }

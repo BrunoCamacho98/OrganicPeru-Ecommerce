@@ -31,6 +31,10 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => _productFromJson(json);
 
+  getId() {
+    return id;
+  }
+
   getName() {
     return (name != null ? name! : " - ");
   }
