@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:organic/models/creditcard.dart';
+import 'package:organic/models/detail_sale.dart';
 
 class Sale {
   late String id;
@@ -13,6 +14,7 @@ class Sale {
   late String cvv;
   late String name;
   late String dueDate;
+  List<DetailSale>? detailSaleList;
 
   DocumentReference? reference;
 
@@ -27,6 +29,7 @@ class Sale {
       required this.cvv,
       required this.name,
       required this.dueDate,
+      this.detailSaleList,
       this.reference});
 
   factory Sale.fromSnapshot(QueryDocumentSnapshot snapshot) {

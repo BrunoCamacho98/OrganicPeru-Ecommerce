@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/models/detail_sale.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 import 'package:flutter_spinbox/material.dart';
+import 'package:organic/constants/globals.dart' as global;
+import 'package:organic/util/queries/sales/sales_query.dart';
 
 class ModalSales extends StatefulWidget {
   const ModalSales({Key? key, required this.user, required this.producto})
@@ -24,6 +27,9 @@ class _ModalSalesState extends State<ModalSales> {
   final Product producto;
   final UserLogin user;
 
+  // ignore: non_constant_identifier_names
+  final SaleQuery sales_query = SaleQuery();
+
   // * Controlador de la caja de texto de nombre
   final TextEditingController _cantidadController = TextEditingController();
   // * Controlador de la caja de texto de descripción
@@ -37,6 +43,7 @@ class _ModalSalesState extends State<ModalSales> {
     super.initState();
     setState(() {
       _cantidadController.text = "0";
+      stockRestante = double.parse(producto.getWeight());
     });
   }
 
@@ -58,6 +65,16 @@ class _ModalSalesState extends State<ModalSales> {
     });
   }
 
+  getDetailSale() {
+    DetailSale detail = DetailSale(
+        idProduct: producto.getId(),
+        product: producto,
+        amount: double.parse(_cantidadController.text),
+        total: _totalPrice);
+
+    return detail;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -73,7 +90,13 @@ class _ModalSalesState extends State<ModalSales> {
           letterSpacing: 0.2),
       actions: [
         MaterialButton(
-          onPressed: loading ? null : () {},
+          onPressed: loading
+              ? null
+              : () async {
+                  DetailSale detail = getDetailSale();
+                  global.detailSales = sales_query.addDetailSaleToList(
+                      global.detailSales, detail);
+                },
           height: 55,
           minWidth: double.infinity,
           color: kPrimaryColor,

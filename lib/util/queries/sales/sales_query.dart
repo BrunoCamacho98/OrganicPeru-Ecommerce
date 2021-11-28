@@ -1,27 +1,24 @@
 // * FIREBASE
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 // * MODEL
 import 'package:flutter/widgets.dart';
 import 'package:organic/models/detail_sale.dart';
-import 'package:organic/models/product.dart';
+import 'package:organic/models/sale.dart';
 
-class UserQuery with ChangeNotifier {
+class SaleQuery with ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
   final CollectionReference detailSalesReference =
       FirebaseFirestore.instance.collection("DetailSale");
 
-  Future<DetailSale> addDetailSale(
-      BuildContext context, Product producto, double amount) async {
-    var total = double.parse(producto.getPrice()) * amount;
+  final CollectionReference salesReference =
+      FirebaseFirestore.instance.collection("Sales");
 
-    DetailSale detailSale = DetailSale(
-        id: '',
-        idProduct: producto.getId(),
-        amount: amount,
-        total: total,
-        idSale: null);
+  Future<DetailSale> addDetailSaleToDB(
+      BuildContext context, DetailSale detailSale, String saleId) async {
+    detailSale.idSale = saleId;
 
     detailSalesReference.add(detailSale.toMapString()).then((value) {
       detailSale.id = value.id;
@@ -32,12 +29,37 @@ class UserQuery with ChangeNotifier {
     return detailSale;
   }
 
-  // Future<UserLogin> updateUser(UserLogin user) async {
-  //   final CollectionReference userReference =
-  //       FirebaseFirestore.instance.collection("Users");
+  Future<Sale> addSale(
+      BuildContext context, List<DetailSale> detailSaleList, Sale sale) async {
+    String saleId = '';
+    sale.detailSaleList = [];
 
-  //   userReference.doc(user.id).update(user.toMapString());
+    salesReference.add(sale.toMapString()).then((value) {
+      saleId = value.id;
+    });
 
-  //   return user;
-  // }
+    for (var detailSale in detailSaleList) {
+      DetailSale detail = await addDetailSaleToDB(context, detailSale, saleId);
+
+      sale.detailSaleList!.add(detail);
+    }
+
+    return sale;
+  }
+
+  List<DetailSale> addDetailSaleToList(
+      List<DetailSale> detailSaleList, DetailSale? detailSale) {
+    if (detailSale != null) {
+      int detailIndex = detailSaleList
+          .indexWhere((element) => element.idProduct == detailSale.idProduct);
+
+      if (detailIndex == -1) {
+        detailSaleList.add(detailSale);
+      } else {
+        detailSaleList[detailIndex] = detailSale;
+      }
+    }
+
+    return detailSaleList;
+  }
 }

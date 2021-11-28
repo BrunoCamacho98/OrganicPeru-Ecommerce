@@ -3,17 +3,20 @@ import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/product/detail_product.dart';
+import 'package:organic/screens/principal/sales/modal_detail_sales.dart';
 import 'package:organic/screens/principal/sales/sales_user_list.dart';
 import 'package:organic/screens/principal/user/profile.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:organic/util/queries/sales/sales_query.dart';
 import 'package:organic/util/queries/user/user_query.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 // * FIREBASE
 import 'package:organic/screens/public/Authentication/authentifcation.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
+import 'package:organic/constants/globals.dart' as global;
 // * SCREENS
 import 'package:organic/screens/principal/components/body.dart';
 import 'package:organic/screens/principal/product/create_product.dart';
@@ -44,6 +47,9 @@ class PrincipalState extends State<Principal> {
 
   int _selectDrawerItem = -1;
   Product? producto;
+
+  // ignore: non_constant_identifier_names
+  final SaleQuery sales_query = SaleQuery();
 
 // * Switch para cambio de vista, según lo seleccionado en el menú lateral
   _getDrawerItemWidget(int pos) {
@@ -89,73 +95,75 @@ class PrincipalState extends State<Principal> {
     );
   }
 
+  void showMySales() {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return const ModalDetailSales();
+        });
+  }
+
 // * Menu superior
   AppBar buildAppBar() {
     return AppBar(
-      elevation: 0,
-      iconTheme: IconThemeData(
-          color: _selectDrawerItem == 6 ? Colors.white : Colors.black54,
-          size: 24,
-          opacity: .5),
-      backgroundColor: _selectDrawerItem == 6 ? kPrimaryColor : kPrimaryWhite,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('Sales').snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                return Stack(children: <Widget>[
-                  FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: _selectDrawerItem == 6
-                        ? Colors.white.withOpacity(0.13)
-                        : Colors.black.withOpacity(0.13),
-                    mini: true,
-                    elevation: 0.0,
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 20,
-                      color: _selectDrawerItem == 6
-                          ? Colors.white
-                          : Colors.black54,
-                    ),
+        elevation: 0,
+        iconTheme: IconThemeData(
+            color: _selectDrawerItem == 6 ? Colors.white : Colors.black54,
+            size: 24,
+            opacity: .5),
+        backgroundColor: _selectDrawerItem == 6 ? kPrimaryColor : kPrimaryWhite,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Stack(children: <Widget>[
+                FloatingActionButton(
+                  onPressed: () {
+                    showMySales();
+                  },
+                  backgroundColor: _selectDrawerItem == 6
+                      ? Colors.white.withOpacity(0.13)
+                      : Colors.black.withOpacity(0.13),
+                  mini: true,
+                  elevation: 0.0,
+                  child: Icon(
+                    Icons.shopping_cart,
+                    size: 20,
+                    color:
+                        _selectDrawerItem == 6 ? Colors.white : Colors.black54,
                   ),
-                  snapshot.data == null
-                      ? Positioned(
-                          right: 1,
-                          top: 4,
-                          child: Container(
-                            padding: const EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: _selectDrawerItem == 6
-                                  ? kPrimaryWhite
-                                  : kPrimaryColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            constraints: const BoxConstraints(
-                                minWidth: 15,
-                                minHeight: 15,
-                                maxHeight: 15,
-                                maxWidth: 15),
-                            child: Text(
-                              snapshot.data!.docs.length.toString(),
-                              style: TextStyle(
-                                  color: _selectDrawerItem == 6
-                                      ? Colors.black87
-                                      : Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.center,
-                            ),
+                ),
+                global.detailSales.isNotEmpty
+                    ? Positioned(
+                        right: 1,
+                        top: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: _selectDrawerItem == 6
+                                ? kPrimaryWhite
+                                : kPrimaryColor,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        )
-                      : const SizedBox()
-                ]);
-              }),
-        )
-      ],
-    );
+                          constraints: const BoxConstraints(
+                              minWidth: 15,
+                              minHeight: 15,
+                              maxHeight: 15,
+                              maxWidth: 15),
+                          child: Text(
+                            global.detailSales.length.toString(),
+                            style: TextStyle(
+                                color: _selectDrawerItem == 6
+                                    ? Colors.black87
+                                    : Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : const SizedBox()
+              ])),
+        ]);
   }
 
   Future updateUser(UserLogin? userLogin) async {

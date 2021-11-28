@@ -65,6 +65,7 @@ class _ProductModalState extends State<ProductModal> {
     // * Devuelve el archivo seleccionado
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
+    // ignore: unnecessary_null_comparison
     if (result == null) return;
     // * Devuelve la ruta de la posición del archivo
     final path = result.files.single.path!;

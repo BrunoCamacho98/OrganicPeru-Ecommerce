@@ -1,21 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:organic/models/product.dart';
 
 class DetailSale {
-  late String id;
+  String? id;
   late String idProduct;
   late double amount;
   late double total;
   String? idSale;
+  Product? product;
 
   DocumentReference? reference;
 
   DetailSale(
-      {required this.id,
+      {this.id,
       required this.idProduct,
       required this.amount,
       required this.total,
-      required this.idSale,
+      this.product,
+      this.idSale,
       this.reference});
 
   factory DetailSale.fromSnapshot(QueryDocumentSnapshot snapshot) {
@@ -28,12 +31,22 @@ class DetailSale {
   factory DetailSale.fromJson(Map<String, dynamic> json) =>
       _detailSaleFromJson(json);
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['idProduct'] = idProduct;
+    data['amount'] = amount;
+    data['total'] = total;
+    data['idSale'] = idSale;
+    return data;
+  }
+
   getTotal() {
     return total;
   }
 
   getTotalFormatted() {
-    return 'S/' + total.toString();
+    return 'S/ ' + total.toString();
   }
 
   getAmount() {
@@ -45,7 +58,7 @@ class DetailSale {
   }
 
   DetailSale.fromSnapShot(DataSnapshot snapshot) {
-    id = snapshot.key!;
+    id = snapshot.key;
     idProduct = snapshot.value['idProduct'];
     amount = snapshot.value['amount'];
     total = snapshot.value['total'];
@@ -72,4 +85,16 @@ DetailSale _detailSaleFromJson(Map<String, dynamic> json) {
       idProduct: json['idProduct'],
       amount: json['amount'],
       total: json['total']);
+}
+
+toJsonString(DetailSale detail) {
+  Map<String, dynamic> map = {
+    'id': detail.id,
+    'idProduct': detail.idProduct,
+    'amount': detail.amount,
+    'total': detail.total,
+    'idSale': detail.idSale
+  };
+
+  return map;
 }

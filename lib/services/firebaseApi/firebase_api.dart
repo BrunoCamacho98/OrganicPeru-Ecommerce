@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_storage/firebase_storage.dart';
 
 // * Servicios de Storage de Firebase
