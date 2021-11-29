@@ -4,7 +4,7 @@ import 'package:organic/models/creditcard.dart';
 import 'package:organic/models/detail_sale.dart';
 
 class Sale {
-  late String id;
+  String? id;
   late String idUsuario;
   late String address;
   late String dateSale;
@@ -14,12 +14,14 @@ class Sale {
   late String cvv;
   late String name;
   late String dueDate;
+  late double total;
+  late String email;
   List<DetailSale>? detailSaleList;
 
   DocumentReference? reference;
 
   Sale(
-      {required this.id,
+      {this.id,
       required this.idUsuario,
       required this.address,
       required this.dateSale,
@@ -29,6 +31,8 @@ class Sale {
       required this.cvv,
       required this.name,
       required this.dueDate,
+      required this.total,
+      required this.email,
       this.detailSaleList,
       this.reference});
 
@@ -44,6 +48,10 @@ class Sale {
     CreditCard credit = CreditCard(
         type: type, cvv: cvv, name: name, number: number, dueDate: dueDate);
     return credit;
+  }
+
+  getTotal() {
+    return 'S/ ' + total.toString();
   }
 
   getAdress() {
@@ -69,6 +77,8 @@ class Sale {
     cvv = snapshot.value['cvv'];
     name = snapshot.value['name'];
     dueDate = snapshot.value['dueDate'];
+    total = snapshot.value['total'];
+    email = snapshot.value['email'];
   }
 
   toMapString() {
@@ -82,7 +92,9 @@ class Sale {
       'number': number,
       'cvv': cvv,
       'name': name,
-      'dueDate': dueDate
+      'dueDate': dueDate,
+      'total': total,
+      'email': email
     };
 
     return map;
@@ -100,5 +112,7 @@ Sale _saleFromJson(Map<String, dynamic> json) {
       number: json['number'],
       cvv: json['cvv'],
       name: json['name'],
-      dueDate: json['dueDate']);
+      dueDate: json['dueDate'],
+      email: json['email'],
+      total: json['total']);
 }

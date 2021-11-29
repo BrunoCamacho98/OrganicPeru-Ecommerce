@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // * MODEL
 import 'package:organic/models/user.dart';
+// Constant
+import 'package:organic/constants/globals.dart' as global;
 
 class UserQuery with ChangeNotifier {
   String? _errorMessage;
@@ -32,6 +34,8 @@ class UserQuery with ChangeNotifier {
         }
       }
     }
+
+    global.userLogged = userLogin!;
 
     notifyListeners();
 

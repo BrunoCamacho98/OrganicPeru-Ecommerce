@@ -6,13 +6,23 @@ import 'package:organic/models/detail_sale.dart';
 import 'package:organic/screens/principal/sales/detail_sale_card.dart';
 
 class ModalDetailSales extends StatefulWidget {
-  const ModalDetailSales({Key? key}) : super(key: key);
+  const ModalDetailSales({Key? key, required this.confirmSale})
+      : super(key: key);
+
+  final Function confirmSale;
 
   @override
-  _ModalDetailSalesState createState() => _ModalDetailSalesState();
+  // ignore: no_logic_in_create_state
+  _ModalDetailSalesState createState() =>
+      // ignore: no_logic_in_create_state
+      _ModalDetailSalesState(confirmSale: confirmSale);
 }
 
 class _ModalDetailSalesState extends State<ModalDetailSales> {
+  _ModalDetailSalesState({required this.confirmSale});
+
+  final Function confirmSale;
+
   getTotal() {
     double total = 0;
 
@@ -53,7 +63,7 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
           letterSpacing: 0.1),
       actions: [
         MaterialButton(
-          onPressed: () async {},
+          onPressed: () => confirmSale(7, null),
           height: 55,
           minWidth: double.infinity,
           color: kPrimaryColor,

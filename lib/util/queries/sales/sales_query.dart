@@ -29,20 +29,23 @@ class SaleQuery with ChangeNotifier {
     return detailSale;
   }
 
-  Future<Sale> addSale(
-      BuildContext context, List<DetailSale> detailSaleList, Sale sale) async {
+  Sale addSale(
+      BuildContext context, List<DetailSale> detailSaleList, Sale sale) {
     String saleId = '';
     sale.detailSaleList = [];
 
-    salesReference.add(sale.toMapString()).then((value) {
+    salesReference.add(sale.toMapString()).then((value) async {
       saleId = value.id;
+      sale.id = value.id;
+      salesReference.doc(value.id).set(sale.toMapString());
+
+      for (var detailSale in detailSaleList) {
+        DetailSale detail =
+            await addDetailSaleToDB(context, detailSale, saleId);
+
+        sale.detailSaleList!.add(detail);
+      }
     });
-
-    for (var detailSale in detailSaleList) {
-      DetailSale detail = await addDetailSaleToDB(context, detailSale, saleId);
-
-      sale.detailSaleList!.add(detail);
-    }
 
     return sale;
   }

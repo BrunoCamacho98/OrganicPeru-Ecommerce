@@ -3,6 +3,7 @@ import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/product/detail_product.dart';
+import 'package:organic/screens/principal/sales/confirm_sale.dart';
 import 'package:organic/screens/principal/sales/modal_detail_sales.dart';
 import 'package:organic/screens/principal/sales/sales_user_list.dart';
 import 'package:organic/screens/principal/user/profile.dart';
@@ -74,6 +75,11 @@ class PrincipalState extends State<Principal> {
         return const Authentication();
       case 6:
         return DetailProduct(product: producto!);
+
+      case 7:
+        return ConfirmSale(
+          confirm: _onSelectItem,
+        );
     }
   }
 
@@ -99,7 +105,9 @@ class PrincipalState extends State<Principal> {
     showDialog(
         context: context,
         builder: (buildcontext) {
-          return const ModalDetailSales();
+          return ModalDetailSales(
+            confirmSale: _onSelectItem,
+          );
         });
   }
 
