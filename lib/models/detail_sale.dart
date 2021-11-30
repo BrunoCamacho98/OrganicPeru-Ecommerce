@@ -49,6 +49,12 @@ class DetailSale {
     return 'S/ ' + total.toString();
   }
 
+  getWithTax() {
+    var taxTotal = total + (total * 0.15);
+
+    return 'S/ ' + taxTotal.toString();
+  }
+
   getAmount() {
     return amount;
   }

@@ -9,11 +9,11 @@ import 'package:organic/constants/globals.dart' as global;
 import 'package:organic/util/queries/sales/sales_query.dart';
 
 class ModalSales extends StatefulWidget {
-  const ModalSales({Key? key, required this.user, required this.producto})
+  const ModalSales({Key? key, this.user, required this.producto})
       : super(key: key);
 
   final Product producto;
-  final UserLogin user;
+  final UserLogin? user;
 
   @override
   _ModalSalesState createState() =>
@@ -22,10 +22,10 @@ class ModalSales extends StatefulWidget {
 }
 
 class _ModalSalesState extends State<ModalSales> {
-  _ModalSalesState({required this.user, required this.producto});
+  _ModalSalesState({this.user, required this.producto});
 
   final Product producto;
-  final UserLogin user;
+  final UserLogin? user;
 
   // ignore: non_constant_identifier_names
   final SaleQuery sales_query = SaleQuery();
@@ -218,19 +218,6 @@ class _ModalSalesState extends State<ModalSales> {
                         step: 0.5,
                         onChanged: (value) => {setCantidadCompra(value)},
                       )
-                      // TextField(
-                      //   keyboardType: TextInputType.number,
-                      //   inputFormatters: <TextInputFormatter>[
-                      //     FilteringTextInputFormatter.digitsOnly,
-                      //   ],
-                      //   controller: _cantidadController,
-                      //   onChanged: (value) => {setCantidadCompra(value)},
-                      //   decoration: InputDecoration(
-                      //       hintText: "Cantidad",
-                      //       prefixIcon: const Icon(Icons.price_change),
-                      //       border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(5))),
-                      // ),
                     ],
                   ),
                 ),

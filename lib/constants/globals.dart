@@ -7,4 +7,6 @@ import 'package:organic/models/user.dart';
 // Lists
 List<DetailSale> detailSales = [];
 // Single
-UserLogin userLogged = UserLogin();
+UserLogin? userLogged;
+
+bool isLogged = false;

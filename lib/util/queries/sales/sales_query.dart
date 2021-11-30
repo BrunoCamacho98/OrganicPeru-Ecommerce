@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:organic/models/detail_sale.dart';
 import 'package:organic/models/sale.dart';
+import 'package:organic/models/vaucher.dart';
 
 class SaleQuery with ChangeNotifier {
   String? _errorMessage;
@@ -15,6 +16,9 @@ class SaleQuery with ChangeNotifier {
 
   final CollectionReference salesReference =
       FirebaseFirestore.instance.collection("Sales");
+
+  final CollectionReference vaucherReference =
+      FirebaseFirestore.instance.collection("Vaucher");
 
   Future<DetailSale> addDetailSaleToDB(
       BuildContext context, DetailSale detailSale, String saleId) async {
@@ -64,5 +68,18 @@ class SaleQuery with ChangeNotifier {
     }
 
     return detailSaleList;
+  }
+
+  Vaucher addVaucher(BuildContext context, Sale sale, String code) {
+    sale.detailSaleList = [];
+
+    Vaucher vaucher = Vaucher(idSale: sale.id, code: code);
+
+    vaucherReference.add(vaucher.toMapString()).then((value) async {
+      vaucher.id = value.id;
+      vaucherReference.doc(value.id).set(vaucher.toMapString());
+    });
+
+    return vaucher;
   }
 }

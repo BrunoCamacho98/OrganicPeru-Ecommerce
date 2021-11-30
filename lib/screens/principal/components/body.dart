@@ -8,10 +8,9 @@ import 'package:organic/util/queries/product/product_query.dart';
 
 class Body extends StatefulWidget {
   final Function viewDetail;
-  final UserLogin user;
+  final UserLogin? user;
 
-  const Body({Key? key, required this.viewDetail, required this.user})
-      : super(key: key);
+  const Body({Key? key, required this.viewDetail, this.user}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
@@ -19,11 +18,11 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  _BodyState({required this.viewDetail, required this.user});
+  _BodyState({required this.viewDetail, this.user});
 
   final ProductQuery productQuery = ProductQuery();
   final Function viewDetail;
-  final UserLogin user;
+  UserLogin? user;
 
   List<Product> productos = <Product>[];
 
@@ -69,7 +68,9 @@ class _BodyState extends State<Body> {
                     width: MediaQuery.of(context).size.width * 0.7,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      user.getName(),
+                      user == null || user?.type == 'Visitante'
+                          ? 'Invitado'
+                          : user!.getName(),
                       softWrap: true,
                       maxLines: 1,
                       textWidthBasis: TextWidthBasis.longestLine,

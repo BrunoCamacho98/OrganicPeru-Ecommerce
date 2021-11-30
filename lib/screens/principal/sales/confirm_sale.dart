@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:organic/constants/globals.dart' as global;
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 // Model
 import 'package:organic/models/sale.dart';
+import 'package:organic/services/mail/mail_service.dart';
 import 'package:organic/util/queries/sales/sales_query.dart';
 
 class ConfirmSale extends StatefulWidget {
@@ -28,6 +30,8 @@ class _ConfirmSaleState extends State<ConfirmSale> {
   TextEditingController numberController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
 
+  bool loading = false;
+
   final Function confirm;
 
   final SaleQuery saleQuery = SaleQuery();
@@ -35,7 +39,7 @@ class _ConfirmSaleState extends State<ConfirmSale> {
   final _formkey = GlobalKey<FormState>();
 
   Sale sale = Sale(
-      idUsuario: global.userLogged.id!,
+      idUsuario: global.userLogged!.id!,
       address: '',
       cvv: '',
       dateSale: '',
@@ -227,46 +231,50 @@ class _ConfirmSaleState extends State<ConfirmSale> {
                   height: 60,
                   width: MediaQuery.of(context).size.width - 50,
                   child: MaterialButton(
-                    onPressed: () async {
-                      var now = DateTime.now();
-                      if (_formkey.currentState!.validate()) {
-                        sale.address = addressController.text;
-                        sale.email = emailController.text;
-                        sale.dueDate = dueDateController.text;
-                        sale.name = nameController.text;
-                        sale.cvv = cvvController.text;
-                        sale.total = getTotal();
-                        sale.state = 'Completed';
-                        sale.number = numberController.text;
-                        sale.dateSale = now.toIso8601String();
+                    onPressed: loading
+                        ? null
+                        : () async {
+                            var now = DateTime.now();
+                            if (_formkey.currentState!.validate()) {
+                              sale.address = addressController.text;
+                              sale.email = emailController.text;
+                              sale.dueDate = dueDateController.text;
+                              sale.name = nameController.text;
+                              sale.cvv = cvvController.text;
+                              sale.total = getTotal();
+                              sale.state = 'Completed';
+                              sale.number = numberController.text;
+                              sale.dateSale = now.toIso8601String();
 
-                        var saleResult = saleQuery.addSale(
-                            context, global.detailSales, sale);
+                              var saleResult = saleQuery.addSale(
+                                  context, global.detailSales, sale);
 
-                        final Email email = Email(
-                          body:
-                              '<p>Comprobante de pago</p><br><p>Total: </p> <label>' +
-                                  sale.total.toString() +
-                                  '</label>',
-                          subject: emailController.text,
-                          recipients: [emailController.text],
-                          isHTML: true,
-                        );
+                              var code = 'INV/' +
+                                  global.userLogged!.id!.substring(0, 4) +
+                                  '/' +
+                                  getDate(DateTime.now());
 
-                        try {
-                          await FlutterEmailSender.send(email);
-                        } catch (error) {
-                          print(error.toString());
-                        }
+                              try {
+                                saleQuery.addVaucher(context, sale, code);
+                                await mail(sale, code);
+                              } catch (error) {
+                                // ignore: avoid_print
+                                print(error.toString());
+                              }
 
-                        if (saleResult.id != null) {
-                          confirm(-1, null);
-                        }
-                      }
-                    },
+                              setState(() {
+                                global.detailSales = [];
+                                loading = true;
+                              });
+
+                              if (saleResult.id != null) {
+                                toPrincipal(context, global.userLogged);
+                              }
+                            }
+                          },
                     height: 55,
                     minWidth: double.infinity,
-                    color: kPrimaryColor,
+                    color: loading ? Colors.grey.shade700 : kPrimaryColor,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

@@ -7,14 +7,11 @@ import 'package:organic/models/user.dart';
 // ignore: must_be_immutable
 class Recomends extends StatelessWidget {
   Recomends(
-      {Key? key,
-      required this.user,
-      required this.productos,
-      required this.viewDetail})
+      {Key? key, this.user, required this.productos, required this.viewDetail})
       : super(key: key);
 
   final Function viewDetail;
-  final UserLogin user;
+  final UserLogin? user;
 
   List<Product> productos = <Product>[];
 
@@ -39,14 +36,14 @@ class RecomendPlantCard extends StatelessWidget {
   const RecomendPlantCard(
       {Key? key,
       this.country,
-      required this.user,
+      this.user,
       required this.press,
       required this.product})
       : super(key: key);
 
   final String? country;
   final Function press;
-  final UserLogin user;
+  final UserLogin? user;
   final Product product;
 
   @override

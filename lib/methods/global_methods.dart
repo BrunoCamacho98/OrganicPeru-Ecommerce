@@ -25,7 +25,7 @@ void toDetailProduct(BuildContext context, Product product) async {
       MaterialPageRoute(builder: (context) => DetailProduct(product: product)));
 }
 
-void showSaleModal(BuildContext context, UserLogin user, Product producto) {
+void showSaleModal(BuildContext context, UserLogin? user, Product producto) {
   showDialog(
       context: context,
       builder: (buildcontext) {

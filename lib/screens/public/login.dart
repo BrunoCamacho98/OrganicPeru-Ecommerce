@@ -8,6 +8,7 @@ import 'package:organic/util/queries/user/user_query.dart';
 import 'package:organic/methods/global_methods.dart';
 // * CONSTANT
 import 'package:organic/constants/theme.dart';
+import 'package:organic/constants/globals.dart' as global;
 // * MODEL
 import 'package:organic/models/user.dart';
 
@@ -34,6 +35,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    global.userLogged = null;
+    global.isLogged = false;
   }
 
   // * Permite un reinicio de los controladores cada vez que se abre la vista
@@ -120,6 +123,7 @@ class _LoginState extends State<Login> {
 
                         if (user?.id != null) {
                           clearAll();
+                          global.isLogged = true;
                           toPrincipal(context, user);
                           setState(() {
                             loading = false;
@@ -190,6 +194,30 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+                  // * Botón de envio a la vista de registro
+                  MaterialButton(
+                    onPressed: () {
+                       toPrincipal(context, null);
+                    },
+                    height: 55,
+                    minWidth: double.infinity,
+                    color: Colors.white,
+                    textColor: Colors.black87,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 0,
+                    child: const Text(
+                      "Modo invitado",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: kPrimaryColor
                       ),
                     ),
                   ),

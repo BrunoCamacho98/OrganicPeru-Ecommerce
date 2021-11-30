@@ -54,6 +54,18 @@ class Sale {
     return 'S/ ' + total.toString();
   }
 
+  getTax() {
+    var tax = total * 0.15;
+
+    return 'S/ ' + tax.toString();
+  }
+
+  getTotalWithTax() {
+    var tax = total + (total * 0.15);
+
+    return 'S/ ' + tax.toString();
+  }
+
   getAdress() {
     return address;
   }

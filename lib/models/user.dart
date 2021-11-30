@@ -8,6 +8,7 @@ class UserLogin {
   String? address;
   String? email;
   String? uid;
+  String? type;
 
   DocumentReference? reference;
 
@@ -18,6 +19,7 @@ class UserLogin {
       this.address,
       this.email,
       this.uid,
+      this.type,
       this.reference});
 
   factory UserLogin.fromSnapshot(QueryDocumentSnapshot snapshot) {
@@ -37,6 +39,7 @@ class UserLogin {
       'address': address,
       'dni': dni,
       'uid': uid,
+      'type': type
     };
 
     return map;
@@ -58,6 +61,10 @@ class UserLogin {
     return address ?? "";
   }
 
+  getType() {
+    return type;
+  }
+
   getUID() {
     return uid;
   }
@@ -69,6 +76,7 @@ class UserLogin {
     dni = snapshot.value['dni'];
     address = snapshot.value['address'];
     uid = snapshot.value['uid'];
+    type = snapshot.value['type'];
   }
 }
 
@@ -79,5 +87,6 @@ UserLogin _userFromJson(Map<String, dynamic> json) {
       uid: json['uid'],
       email: json['email'],
       address: json['address'],
-      dni: json['dni']);
+      dni: json['dni'],
+      type: json['type']);
 }
