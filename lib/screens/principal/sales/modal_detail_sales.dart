@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // Constant
 import 'package:organic/constants/theme.dart';
 import 'package:organic/constants/globals.dart' as global;
-import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/detail_sale.dart';
 import 'package:organic/screens/principal/sales/detail_sale_card.dart';
 
@@ -63,69 +62,38 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
           wordSpacing: 0.5,
           letterSpacing: 0.1),
       actions: [
-        !global.isLogged
-            ? MaterialButton(
-                onPressed: null,
-                height: 55,
-                minWidth: double.infinity,
-                color: Colors.grey.shade400,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Comprar ',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '(Total: ' + getTotal() + ')',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : MaterialButton(
-                onPressed: () {
-                  confirmSale(7, null);
-                },
-                height: 55,
-                minWidth: double.infinity,
-                color: kPrimaryColor,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Comprar ',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '(Total: ' + getTotal() + ')',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+        MaterialButton(
+          onPressed: () {
+            confirmSale(7, null);
+          },
+          height: 55,
+          minWidth: double.infinity,
+          color: kPrimaryColor,
+          textColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Comprar ',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
+              Text(
+                '(Total: ' + getTotal() + ')',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
       content: Column(
         children: global.detailSales.isNotEmpty

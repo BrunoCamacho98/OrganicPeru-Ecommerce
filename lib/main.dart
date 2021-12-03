@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider<AuthServices>.value(
                     value: AuthServices()),
                 StreamProvider<User?>.value(
-                    value: AuthServices().user, initialData: null)
+                    value: AuthServices().user, initialData: null),
+                StreamProvider.value(
+                    value: FirebaseAuth.instance.authStateChanges(),
+                    initialData: null)
               ],
               child: MaterialApp(
                 // * Designar los colores usados en la aplicación

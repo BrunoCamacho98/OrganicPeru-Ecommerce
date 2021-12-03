@@ -61,7 +61,7 @@ class Sale {
   }
 
   getTotalWithTax() {
-    var tax = total + (total * 0.15);
+    var tax = total + (total * 0.15).roundToDouble();
 
     return 'S/ ' + tax.toString();
   }

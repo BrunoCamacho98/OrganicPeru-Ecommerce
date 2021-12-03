@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 // * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
+import 'package:organic/services/authentification/google_auth_services.dart';
 // * FIREBASE
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,11 +17,21 @@ class UserQuery with ChangeNotifier {
   final CollectionReference userReference =
       FirebaseFirestore.instance.collection("Users");
 
-  Future<UserLogin?> loginUser(BuildContext context, AuthServices loginProvider,
-      String email, String password) async {
+  Future<UserLogin?> loginUser(
+      BuildContext context,
+      AuthServices? loginProvider,
+      GoogleSignInProvider? gmailProvider,
+      String email,
+      String password,
+      String provider) async {
     UserLogin? userLogin;
+    User? user;
 
-    User? user = await loginProvider.login(email, password);
+    if (provider == 'email') {
+      user = await loginProvider!.login(email, password);
+    } else if (provider == 'gmail') {
+      user = await gmailProvider!.googleLogin();
+    }
 
     if (user != null) {
       QuerySnapshot users =
@@ -30,12 +41,11 @@ class UserQuery with ChangeNotifier {
         for (var doc in users.docs) {
           if (user.uid == doc.get("uid")) {
             userLogin = UserLogin.fromSnapshot(doc);
+            global.userLogged = userLogin;
           }
         }
       }
     }
-
-    global.userLogged = userLogin!;
 
     notifyListeners();
 

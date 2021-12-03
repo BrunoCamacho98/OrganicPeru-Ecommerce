@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:organic/constants/globals.dart' as global;
@@ -8,6 +7,7 @@ import 'package:organic/methods/global_methods.dart';
 // Model
 import 'package:organic/models/sale.dart';
 import 'package:organic/services/mail/mail_service.dart';
+import 'package:organic/util/queries/product/product_query.dart';
 import 'package:organic/util/queries/sales/sales_query.dart';
 
 class ConfirmSale extends StatefulWidget {
@@ -35,6 +35,7 @@ class _ConfirmSaleState extends State<ConfirmSale> {
   final Function confirm;
 
   final SaleQuery saleQuery = SaleQuery();
+  final ProductQuery productQuery = ProductQuery();
 
   final _formkey = GlobalKey<FormState>();
 
@@ -260,6 +261,19 @@ class _ConfirmSaleState extends State<ConfirmSale> {
                               } catch (error) {
                                 // ignore: avoid_print
                                 print(error.toString());
+                              }
+
+                              for (var detail in global.detailSales) {
+                                var stock =
+                                    double.parse(detail.product!.weight!) -
+                                        detail.getAmount();
+
+                                var producto = detail.product;
+                                producto!.weight = stock.toString();
+
+                                productQuery.productReference
+                                    .doc(producto.id)
+                                    .update(producto.toMapString());
                               }
 
                               setState(() {

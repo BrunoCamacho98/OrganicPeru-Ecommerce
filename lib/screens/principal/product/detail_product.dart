@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
-// * MODEL
+// Model
 import 'package:organic/models/product.dart';
+import 'package:organic/models/user.dart';
+import 'package:organic/screens/principal/components/modal_sale.dart';
+// Constant
+import 'package:organic/constants/globals.dart' as global;
 
 class DetailProduct extends StatefulWidget {
   const DetailProduct({Key? key, required this.product}) : super(key: key);
@@ -21,6 +25,14 @@ class _DetailProductState extends State<DetailProduct> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void showSaleModal(BuildContext context, UserLogin? user, Product producto) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return ModalSales(producto: producto, user: user);
+        });
   }
 
   @override
@@ -91,7 +103,9 @@ class _DetailProductState extends State<DetailProduct> {
                       color: Colors.black87,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showSaleModal(context, global.userLogged, product);
+                      },
                       icon: const Icon(Icons.production_quantity_limits_rounded,
                           color: Colors.white),
                     ),

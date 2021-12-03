@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
+import 'package:organic/services/authentification/google_auth_services.dart';
 import 'package:provider/provider.dart';
 // * QUERIES
 import 'package:organic/util/queries/user/user_query.dart';
@@ -55,6 +56,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthServices>(context);
+    final gmailProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
     final UserQuery userQuery = UserQuery();
 
     return Scaffold(
@@ -95,7 +98,9 @@ class _LoginState extends State<Login> {
                         hintText: "Correo electrónico",
                         prefixIcon: const Icon(Icons.mail),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.black26))),
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                                const BorderSide(color: Colors.black26))),
                   ),
                   const SizedBox(height: 30),
                   // * Caja de texto para ingreso de contraseña
@@ -113,13 +118,17 @@ class _LoginState extends State<Login> {
                   MaterialButton(
                     onPressed: () async {
                       if (_formkey.currentState!.validate()) {
-
                         setState(() {
                           loading = true;
                         });
                         // * Método de inicio de sesión
-                        UserLogin? user = await userQuery.loginUser(context, loginProvider
-                            _emailController.text, _passwordController.text);
+                        UserLogin? user = await userQuery.loginUser(
+                            context,
+                            loginProvider,
+                            null,
+                            _emailController.text,
+                            _passwordController.text,
+                            'email');
 
                         if (user?.id != null) {
                           clearAll();
@@ -151,31 +160,52 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 10),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      // * Método de inicio de sesión
+                      UserLogin? user = await userQuery.loginUser(
+                          context,
+                          null,
+                          gmailProvider,
+                          _emailController.text,
+                          _passwordController.text,
+                          'gmail');
+
+                      if (user?.id != null) {
+                        clearAll();
+                        global.isLogged = true;
+                        toPrincipal(context, user);
+                        setState(() {
+                          loading = false;
+                        });
+                      }
+                    },
                     height: 55,
                     minWidth: double.infinity,
                     color: kBackgroundColor,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.black12)
-                    ),
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(color: Colors.black12)),
                     elevation: 0,
                     child: loading
                         ? const CircularProgressIndicator()
                         : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset("assets/icons/google_icon.png", height: 20),
-                              const SizedBox(width: 10,),
-                              const Text("Iniciar sesión con Google",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87
-                            ))
-                            ]
-                          ),
+                                Image.asset("assets/icons/google_icon.png",
+                                    height: 20),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text("Iniciar sesión con Google",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87))
+                              ]),
                   ),
                   const SizedBox(height: 10),
                   // * Botón de envio a la vista de registro
@@ -202,7 +232,7 @@ class _LoginState extends State<Login> {
                   // * Botón de envio a la vista de registro
                   MaterialButton(
                     onPressed: () {
-                       toPrincipal(context, null);
+                      toPrincipal(context, null);
                     },
                     height: 55,
                     minWidth: double.infinity,
@@ -215,10 +245,9 @@ class _LoginState extends State<Login> {
                     child: const Text(
                       "Modo invitado",
                       style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: kPrimaryColor
-                      ),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: kPrimaryColor),
                     ),
                   ),
                 ],

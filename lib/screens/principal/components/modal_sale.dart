@@ -30,6 +30,8 @@ class _ModalSalesState extends State<ModalSales> {
   // ignore: non_constant_identifier_names
   final SaleQuery sales_query = SaleQuery();
 
+  DetailSale? detailSale = DetailSale(idProduct: '', amount: 0, total: 0);
+
   // * Controlador de la caja de texto de nombre
   final TextEditingController _cantidadController = TextEditingController();
   // * Controlador de la caja de texto de descripción
@@ -42,9 +44,35 @@ class _ModalSalesState extends State<ModalSales> {
   void initState() {
     super.initState();
     setState(() {
-      _cantidadController.text = "0";
-      stockRestante = double.parse(producto.getWeight());
+      detailSale = getDetail();
+      _cantidadController.text =
+          detailSale == null ? "0" : detailSale!.amount.toString();
+      stockRestante = getStock();
+      _totalPrice = double.parse(_cantidadController.text) *
+          double.parse(producto.price!);
     });
+  }
+
+  DetailSale? getDetail() {
+    if (global.detailSales.isEmpty) return null;
+
+    var detail =
+        global.detailSales.where((detail) => detail.idProduct == producto.id!);
+
+    if (detail.isEmpty) return null;
+
+    return detail.first;
+  }
+
+  getStock() {
+    if (detailSale == null) {
+      return double.parse(producto.getWeight());
+    } else {
+      var stock = double.parse(producto.getWeight());
+      var amount = detailSale!.amount;
+
+      return stock - amount;
+    }
   }
 
   setCantidadCompra(double cantidad) {
@@ -96,6 +124,8 @@ class _ModalSalesState extends State<ModalSales> {
                   DetailSale detail = getDetailSale();
                   global.detailSales = sales_query.addDetailSaleToList(
                       global.detailSales, detail);
+
+                  Navigator.pop(context);
                 },
           height: 55,
           minWidth: double.infinity,
