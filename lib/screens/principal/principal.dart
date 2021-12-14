@@ -187,16 +187,16 @@ class PrincipalState extends State<Principal> {
         children: <Widget>[
           // * Datos del usuario
           UserAccountsDrawerHeader(
-            accountName: Text(user == null || user?.type == 'Visitante'
+            accountName: Text(user == null || user?.type == 'VISITOR'
                 ? 'Invitado'
                 : user?.name as String),
-            accountEmail: Text(user == null || user?.type == 'Visitante'
+            accountEmail: Text(user == null || user?.type == 'VISITOR'
                 ? 'Invitado@gmail.com'
                 : user?.email as String),
             currentAccountPicture: CircleAvatar(
               backgroundColor: kPrimaryColor,
               child: Text(
-                user == null || user?.type == 'Visitante'
+                user == null || user?.type == 'VISITOR'
                     ? 'IN'
                     : (user?.email as String).substring(0, 1).toUpperCase(),
                 style: const TextStyle(fontSize: 40.0, color: kPrimaryWhite),
@@ -221,7 +221,7 @@ class PrincipalState extends State<Principal> {
                 _onSelectItem(-1, null);
               }),
 
-          user == null || user?.type == 'Visitante'
+          user == null || user?.type == 'VISITOR'
               ? const SizedBox()
               :
               // * Lista de todos los productos agregados por el usuario
@@ -240,7 +240,7 @@ class PrincipalState extends State<Principal> {
                     _onSelectItem(2, null);
                   }),
           // * Creación de productos
-          user == null || user?.type == 'Visitante'
+          user == null || user?.type == 'VISITOR'
               ? const SizedBox()
               : ListTile(
                   title: Text('Crear producto',
@@ -256,25 +256,27 @@ class PrincipalState extends State<Principal> {
                   onTap: () {
                     _onSelectItem(1, null);
                   }),
-          //      user == null || user?.type == 'Visitante' ?
-          // ListTile(
-          //     title: Text('Mis compras',
-          //         style: TextStyle(
-          //             color: 4 == _selectDrawerItem
-          //                 ? kPrimaryColor
-          //                 : Colors.black87)),
-          //     leading: Icon(Icons.production_quantity_limits_rounded,
-          //         color:
-          //             4 == _selectDrawerItem ? kPrimaryColor : Colors.black54),
-          //     selected: (4 == _selectDrawerItem),
-          //     onTap: () {
-          //       _onSelectItem(4, null);
-          //     }) : const SizedBox(),
+          user == null || user?.type == 'VISITOR'
+              ? const SizedBox()
+              : ListTile(
+                  title: Text('Mis compras',
+                      style: TextStyle(
+                          color: 4 == _selectDrawerItem
+                              ? kPrimaryColor
+                              : Colors.black87)),
+                  leading: Icon(Icons.production_quantity_limits_rounded,
+                      color: 4 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black54),
+                  selected: (4 == _selectDrawerItem),
+                  onTap: () {
+                    _onSelectItem(4, null);
+                  }),
           const Divider(
             thickness: 0.9,
           ),
 
-          user == null || user?.type == 'Visitante'
+          user == null || user?.type == 'VISITOR'
               ? const SizedBox()
               :
               // * Perfil de usuario
@@ -294,7 +296,7 @@ class PrincipalState extends State<Principal> {
                   }),
           // * Cierre de sesión
 
-          user == null || user?.type == 'Visitante'
+          user == null || user?.type == 'VISITOR'
               ? const SizedBox()
               : ListTile(
                   title: Text('Cerrar sesión',
@@ -312,7 +314,7 @@ class PrincipalState extends State<Principal> {
                     toMain(context);
                   }),
 
-          user == null || user?.type == 'Visitante'
+          user == null || user?.type == 'VISITOR'
               ? ListTile(
                   title: const Text('Iniciar sesión',
                       style: TextStyle(color: Colors.black87)),

@@ -15,12 +15,15 @@ class DetailSaleCard extends StatelessWidget {
       {Key? key,
       required this.detailSale,
       required this.product,
-      required this.remove})
+      required this.remove,
+      required this.useRemove})
       : super(key: key);
 
   final DetailSale detailSale;
 
   final Function remove;
+
+  bool useRemove = false;
 
   // * Variable del producto
   final Product product;
@@ -37,7 +40,7 @@ class DetailSaleCard extends StatelessWidget {
             color: Colors.black12, style: BorderStyle.solid, width: 1),
       )),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         child: Column(
           children: [
             Row(
@@ -85,15 +88,16 @@ class DetailSaleCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Spacer(),
+                useRemove ? const Spacer() : const SizedBox(),
                 // * Precio del producto
-
-                IconButton(
-                    key: const Key("removeOption"),
-                    onPressed: () => remove(detailSale),
-                    alignment: Alignment.center,
-                    color: Colors.redAccent,
-                    icon: const Icon(Icons.cancel)),
+                useRemove
+                    ? IconButton(
+                        key: const Key("removeOption"),
+                        onPressed: () => remove(detailSale),
+                        alignment: Alignment.center,
+                        color: Colors.redAccent,
+                        icon: const Icon(Icons.cancel))
+                    : const SizedBox()
               ],
             ),
             Row(

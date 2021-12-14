@@ -65,6 +65,7 @@ class UserQuery with ChangeNotifier {
           uid: user.uid,
           id: null,
           dni: null,
+          type: 'VISITOR',
           address: null);
 
       userReference.add(userLogin.toMapString()).then((value) {

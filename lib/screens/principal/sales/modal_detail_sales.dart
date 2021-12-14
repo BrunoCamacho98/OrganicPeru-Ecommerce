@@ -43,7 +43,7 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Container(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 20),
         child: const Text(
           'Mis compras',
           style: TextStyle(
@@ -51,6 +51,7 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
           ),
         ),
       ),
+      scrollable: true,
       insetPadding: const EdgeInsets.all(5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 2),
       actionsAlignment: MainAxisAlignment.center,
@@ -102,6 +103,7 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
                   product: e.product!,
                   detailSale: e,
                   remove: deleteFromDetailList,
+                  useRemove: true,
                 );
               }).toList()
             : [const Text('No tiene compras')],

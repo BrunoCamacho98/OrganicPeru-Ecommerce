@@ -74,6 +74,22 @@ class Sale {
     return DateTime.parse(dateSale);
   }
 
+  getDateFormatted() {
+    DateTime date = DateTime.parse(dateSale);
+
+    int day = date.day;
+    int month = date.month;
+    int year = date.year;
+
+    return (day >= 10 ? '' : '0') +
+        day.toString() +
+        '/' +
+        (month >= 10 ? '' : '0') +
+        month.toString() +
+        '/' +
+        year.toString();
+  }
+
   getState() {
     return state;
   }

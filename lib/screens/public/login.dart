@@ -56,8 +56,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthServices>(context);
-    final gmailProvider =
-        Provider.of<GoogleSignInProvider>(context, listen: false);
+    // final gmailProvider =
+    //     Provider.of<GoogleSignInProvider>(context, listen: false);
     final UserQuery userQuery = UserQuery();
 
     return Scaffold(
@@ -161,26 +161,26 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 10),
                   MaterialButton(
                     onPressed: () async {
-                      setState(() {
-                        loading = true;
-                      });
-                      // * Método de inicio de sesión
-                      UserLogin? user = await userQuery.loginUser(
-                          context,
-                          null,
-                          gmailProvider,
-                          _emailController.text,
-                          _passwordController.text,
-                          'gmail');
+                      // setState(() {
+                      //   loading = true;
+                      // });
+                      // // * Método de inicio de sesión
+                      // UserLogin? user = await userQuery.loginUser(
+                      //     context,
+                      //     null,
+                      //     gmailProvider,
+                      //     _emailController.text,
+                      //     _passwordController.text,
+                      //     'gmail');
 
-                      if (user?.id != null) {
-                        clearAll();
-                        global.isLogged = true;
-                        toPrincipal(context, user);
-                        setState(() {
-                          loading = false;
-                        });
-                      }
+                      // if (user?.id != null) {
+                      //   clearAll();
+                      //   global.isLogged = true;
+                      //   toPrincipal(context, user);
+                      //   setState(() {
+                      //     loading = false;
+                      //   });
+                      // }
                     },
                     height: 55,
                     minWidth: double.infinity,

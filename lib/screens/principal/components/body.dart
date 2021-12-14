@@ -68,7 +68,7 @@ class _BodyState extends State<Body> {
                     width: MediaQuery.of(context).size.width * 0.7,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      user == null || user?.type == 'Visitante'
+                      user == null || user?.type == 'VISITOR'
                           ? 'Invitado'
                           : user!.getName(),
                       softWrap: true,
