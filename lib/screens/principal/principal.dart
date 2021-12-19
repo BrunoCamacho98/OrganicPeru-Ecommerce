@@ -5,6 +5,7 @@ import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/product/detail_product.dart';
 import 'package:organic/screens/principal/sales/confirm_sale.dart';
 import 'package:organic/screens/principal/sales/modal_detail_sales.dart';
+import 'package:organic/screens/principal/sales/my_sales.dart';
 import 'package:organic/screens/principal/sales/sales_user_list.dart';
 import 'package:organic/screens/principal/user/profile.dart';
 import 'package:organic/services/authentification/auth_services.dart';
@@ -77,6 +78,8 @@ class PrincipalState extends State<Principal> {
         return DetailProduct(product: producto!);
       case 7:
         return ConfirmSale(confirm: _onSelectItem);
+      case 8:
+        return const MySales();
     }
   }
 
@@ -256,6 +259,7 @@ class PrincipalState extends State<Principal> {
                   onTap: () {
                     _onSelectItem(1, null);
                   }),
+
           user == null || user?.type == 'VISITOR'
               ? const SizedBox()
               : ListTile(
@@ -271,6 +275,26 @@ class PrincipalState extends State<Principal> {
                   selected: (4 == _selectDrawerItem),
                   onTap: () {
                     _onSelectItem(4, null);
+                  }),
+          const Divider(
+            thickness: 0.9,
+          ),
+
+          user == null || user?.type == 'VISITOR'
+              ? const SizedBox()
+              : ListTile(
+                  title: Text('Mis ventas',
+                      style: TextStyle(
+                          color: 8 == _selectDrawerItem
+                              ? kPrimaryColor
+                              : Colors.black87)),
+                  leading: Icon(Icons.production_quantity_limits_rounded,
+                      color: 8 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black54),
+                  selected: (8 == _selectDrawerItem),
+                  onTap: () {
+                    _onSelectItem(8, null);
                   }),
           const Divider(
             thickness: 0.9,
