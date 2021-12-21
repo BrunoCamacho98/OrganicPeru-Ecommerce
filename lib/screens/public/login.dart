@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
-import 'package:organic/services/authentification/google_auth_services.dart';
 import 'package:provider/provider.dart';
 // * QUERIES
 import 'package:organic/util/queries/user/user_query.dart';
@@ -133,14 +132,7 @@ class _LoginState extends State<Login> {
                             'email');
 
                         if (user?.id != null) {
-                          // Fluttertoast.showToast(
-                          //     msg: "Iniciando sesión",
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.CENTER,
-                          //     timeInSecForIosWeb: 1,
-                          //     backgroundColor: Colors.green,
-                          //     textColor: Colors.white,
-                          //     fontSize: 16.0);
+                          getToast('Inicio de sesión exitoso', Colors.green);
                           clearAll();
                           global.isLogged = true;
                           toPrincipal(context, user);

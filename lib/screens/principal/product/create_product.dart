@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 // * FIREBASE
@@ -266,6 +267,7 @@ class _CreateProductState extends State<CreateProduct> {
               MaterialButton(
                 onPressed: () {
                   addProduct();
+                  getToast('Producto creado', Colors.green);
                 },
                 height: 55,
                 minWidth: double.infinity,

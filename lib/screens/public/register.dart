@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // * FIREBASE
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:organic/methods/global_methods.dart';
 // * SERVICES
 import 'package:organic/services/authentification/auth_services.dart';
 // *  QUERIES
@@ -146,6 +148,7 @@ class _RegisterState extends State<Register> {
                             _passwordController.text);
 
                         if (user != null) {
+                          getToast('Usuario creado', Colors.green);
                           _emailController.clear();
                           _passwordController.clear();
                           _repeatPasswordController.clear();

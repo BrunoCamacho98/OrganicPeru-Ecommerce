@@ -51,4 +51,27 @@ class ProductQuery with ChangeNotifier {
 
     return productList;
   }
+
+  Future<Product?> updateProduct(Product producto) async {
+    try {
+      QuerySnapshot products = await FirebaseFirestore.instance
+          .collection('Product')
+          .where('id', isEqualTo: producto.id)
+          .get();
+
+      Product product = Product();
+
+      if (products.docs.isNotEmpty) {
+        for (var doc in products.docs) {
+          product = Product.fromSnapshot(doc);
+        }
+      }
+
+      notifyListeners();
+
+      return product;
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
 import 'package:organic/screens/principal/product/modal_product.dart';
@@ -76,6 +77,8 @@ class _ListProductState extends State<ListProduct> {
     setState(() {
       products.removeWhere((element) => element.id == productId);
     });
+
+    getToast('Producto eliminado', Colors.red);
   }
 
   Future updateData(Product producto) async {

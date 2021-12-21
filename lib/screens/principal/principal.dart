@@ -88,7 +88,7 @@ class PrincipalState extends State<Principal> {
 
   // * Cambio de valor en la variable utilizada para validar que Vista mostrar
   _onSelectItem(int pos, Product? product) {
-    if (product == null) Navigator.of(context).pop();
+    if (product == null && pos != 7) Navigator.of(context).pop();
     setState(() {
       _selectDrawerItem = pos;
       producto = product;
@@ -227,7 +227,7 @@ class PrincipalState extends State<Principal> {
                 _onSelectItem(-1, null);
               }),
 
-          user == null || user?.type == 'VISITOR'
+          user == null || user?.type != 'ADMIN'
               ? const SizedBox()
               :
               // * Lista de todos los productos agregados por el usuario
@@ -246,7 +246,7 @@ class PrincipalState extends State<Principal> {
                     _onSelectItem(2, null);
                   }),
           // * Creación de productos
-          user == null || user?.type == 'VISITOR'
+          user == null || user?.type != 'ADMIN'
               ? const SizedBox()
               : ListTile(
                   title: Text('Crear producto',
@@ -280,13 +280,13 @@ class PrincipalState extends State<Principal> {
                     _onSelectItem(4, null);
                   }),
 
-          user == null || user?.type == 'VISITOR'
+          user == null || user?.type != 'ADMIN'
               ? const SizedBox()
               : const Divider(
                   thickness: 0.9,
                 ),
 
-          user == null || user?.type == 'VISITOR'
+          user == null || user?.type != 'ADMIN'
               ? const SizedBox()
               : ListTile(
                   title: Text('Mis ventas',
@@ -303,7 +303,7 @@ class PrincipalState extends State<Principal> {
                     _onSelectItem(8, null);
                   }),
 
-          user == null || user?.type == 'VISITOR'
+          user == null || user?.type != 'ADMIN'
               ? const SizedBox()
               : ListTile(
                   title: Text('Usuarios',

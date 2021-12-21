@@ -282,6 +282,9 @@ class _ConfirmSaleState extends State<ConfirmSale> {
                               });
 
                               if (saleResult.id != null) {
+                                getToast('Compra exitosa', Colors.green);
+                                getToast(
+                                    'Recibo enviado a su correo', Colors.green);
                                 toPrincipal(context, global.userLogged);
                               }
                             }

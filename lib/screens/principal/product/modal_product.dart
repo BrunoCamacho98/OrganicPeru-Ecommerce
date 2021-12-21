@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:organic/methods/global_methods.dart';
 import 'package:path/path.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -123,6 +124,8 @@ class _ProductModalState extends State<ProductModal> {
             );
 
             updateData(productoUpdated);
+
+            getToast('Producto actualizado', Colors.green);
           },
           height: 55,
           minWidth: double.infinity,

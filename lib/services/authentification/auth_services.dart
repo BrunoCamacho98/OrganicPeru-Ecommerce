@@ -3,6 +3,7 @@ import 'dart:io';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:organic/models/user.dart';
 
 class AuthServices with ChangeNotifier {
   bool _isLoading = false;

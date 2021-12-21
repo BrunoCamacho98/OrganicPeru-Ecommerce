@@ -87,6 +87,15 @@ class UserQuery with ChangeNotifier {
     return user;
   }
 
+  Future<UserLogin> deleteUser(UserLogin user) async {
+    final CollectionReference userReference =
+        FirebaseFirestore.instance.collection("Users");
+
+    userReference.doc(user.id).delete();
+
+    return user;
+  }
+
   Future<UserLogin> getUserById(String userId) async {
     final CollectionReference userReference =
         FirebaseFirestore.instance.collection("Users");

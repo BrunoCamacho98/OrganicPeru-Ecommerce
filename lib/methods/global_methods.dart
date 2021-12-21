@@ -1,5 +1,6 @@
 // * SERVICES
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:organic/main.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
@@ -31,4 +32,15 @@ void showSaleModal(BuildContext context, UserLogin? user, Product producto) {
       builder: (buildcontext) {
         return ModalSales(producto: producto, user: user);
       });
+}
+
+void getToast(String message, Color color) {
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    backgroundColor: color,
+    fontSize: 25,
+    textColor: Colors.white,
+  );
 }

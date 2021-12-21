@@ -66,6 +66,7 @@ class _ModalDetailSalesState extends State<ModalDetailSales> {
         MaterialButton(
           onPressed: () {
             confirmSale(7, null);
+            Navigator.of(context).pop();
           },
           height: 55,
           minWidth: double.infinity,

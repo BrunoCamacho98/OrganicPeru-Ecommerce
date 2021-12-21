@@ -30,7 +30,7 @@ class _SalesUserListState extends State<SalesUserList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +55,15 @@ class _SalesUserListState extends State<SalesUserList> {
                       useTax: true,
                     );
                   }).toList()
-                : [const Text('No tiene compras')],
+                : [
+                    Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: const Text(
+                          'No ha realizado compras',
+                          style: TextStyle(fontSize: 16),
+                        ))
+                  ],
           ),
         ],
       ),

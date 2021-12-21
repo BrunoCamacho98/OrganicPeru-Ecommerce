@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
+import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
+import 'package:organic/screens/principal/user/user_modal.dart';
+import 'package:organic/util/queries/product/product_query.dart';
 import 'package:organic/util/queries/user/user_query.dart';
 
 class UserManage extends StatefulWidget {
@@ -24,6 +28,30 @@ class _UserManageState extends State<UserManage> {
     });
 
     super.initState();
+  }
+
+  getUpdateUser(UserLogin user) async {
+    UserLogin userUpdated = await userQuery.updateUser(user);
+
+    var index = userList.indexWhere((user) => user.id == userUpdated.id);
+
+    setState(() {
+      userList[index] = userUpdated;
+    });
+
+    getToast('Usuario actualizado', Colors.green);
+  }
+
+  getDeleteUser(UserLogin user) async {
+    UserLogin userDeleted = await userQuery.deleteUser(user);
+
+    var index = userList.indexWhere((user) => user.id == userDeleted.id);
+
+    setState(() {
+      userList.removeAt(index);
+    });
+
+    getToast('Usuario eliminado', Colors.red);
   }
 
   @override
@@ -50,7 +78,11 @@ class _UserManageState extends State<UserManage> {
           Column(
             children: userList.isNotEmpty
                 ? userList.map((user) {
-                    return UserCard(user: user);
+                    return UserCard(
+                      user: user,
+                      updateUser: getUpdateUser,
+                      deleteUser: getDeleteUser,
+                    );
                   }).toList()
                 : [
                     Container(
@@ -66,9 +98,29 @@ class _UserManageState extends State<UserManage> {
 }
 
 class UserCard extends StatelessWidget {
-  const UserCard({Key? key, required this.user}) : super(key: key);
+  UserCard(
+      {Key? key,
+      required this.user,
+      required this.updateUser,
+      required this.deleteUser})
+      : super(key: key);
 
   final UserLogin user;
+
+  Widget? dropdownValue;
+  Function updateUser;
+  Function deleteUser;
+
+  void showUserModal(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return UserModal(
+            user: user,
+            updateData: updateUser,
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +133,7 @@ class UserCard extends StatelessWidget {
                 color: Color(0xFFe3e3e3), width: 1, style: BorderStyle.solid)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,12 +218,57 @@ class UserCard extends StatelessWidget {
                 // * Precio del producto
 
                 const Spacer(),
-                // getDropdownMenu()
+                getDropdownMenu(context)
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget getDropdownMenu(BuildContext context) {
+    return DropdownButton<Widget>(
+      value: dropdownValue,
+      icon: const Icon(Icons.more_vert),
+      iconSize: 20,
+      elevation: 8,
+      alignment: Alignment.center,
+      borderRadius: BorderRadius.circular(4),
+      style: const TextStyle(color: Colors.black54),
+      underline: Container(
+        height: 1,
+        color: Colors.white,
+      ),
+      onChanged: (value) async {
+        if (value!.key == const Key("detailOption")) {
+          showUserModal(context);
+        }
+
+        if (value.key == const Key("removeOption")) {
+          deleteUser(user);
+        }
+      },
+      items: <Widget>[
+        IconButton(
+            key: const Key("detailOption"),
+            onPressed: () => showUserModal(context),
+            alignment: Alignment.center,
+            color: Colors.blueAccent,
+            icon: const Icon(Icons.edit_outlined)),
+        IconButton(
+            key: const Key("removeOption"),
+            onPressed: () async => deleteUser(user),
+            alignment: Alignment.center,
+            color: Colors.redAccent,
+            icon: const Icon(Icons.delete_outline)),
+      ].map<DropdownMenuItem<Widget>>((Widget value) {
+        return DropdownMenuItem<Widget>(
+          value: value,
+          child:
+              Container(width: 10, alignment: Alignment.center, child: value),
+        );
+      }).toList(),
     );
   }
 }

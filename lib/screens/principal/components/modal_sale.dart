@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/detail_sale.dart';
 import 'package:organic/models/product.dart';
 import 'package:organic/models/user.dart';
@@ -124,6 +125,8 @@ class _ModalSalesState extends State<ModalSales> {
                   DetailSale detail = getDetailSale();
                   global.detailSales = sales_query.addDetailSaleToList(
                       global.detailSales, detail);
+
+                  getToast('Pedido guardado en el carrito', Colors.green);
 
                   Navigator.pop(context);
                 },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organic/constants/theme.dart';
+import 'package:organic/methods/global_methods.dart';
 import 'package:organic/models/user.dart';
 
 // ignore: must_be_immutable
@@ -184,6 +185,7 @@ class _ProfileState extends State<Profile> {
                         onPressed: () {
                           if (_formkey.currentState!.validate()) {
                             updateUser(user);
+                            getToast('Usuario actualizado', Colors.green);
                           }
                         },
                         height: 60,
