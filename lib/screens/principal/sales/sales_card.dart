@@ -5,18 +5,30 @@ import 'package:organic/screens/principal/sales/modal_sale.dart';
 
 class SalesCard extends StatefulWidget {
   final Sale sale;
+  bool showUser;
+  bool useTax;
 
-  const SalesCard({Key? key, required this.sale}) : super(key: key);
+  SalesCard(
+      {Key? key,
+      required this.sale,
+      required this.showUser,
+      required this.useTax})
+      : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  _SalesCardState createState() => _SalesCardState(sale: sale);
+  _SalesCardState createState() =>
+      // ignore: no_logic_in_create_state
+      _SalesCardState(sale: sale, showUser: showUser, useTax: useTax);
 }
 
 class _SalesCardState extends State<SalesCard> {
-  _SalesCardState({required this.sale});
+  _SalesCardState(
+      {required this.sale, required this.showUser, required this.useTax});
 
   final Sale sale;
+  bool showUser;
+  bool useTax;
 
   void showProductModal() {
     showDialog(
@@ -30,6 +42,7 @@ class _SalesCardState extends State<SalesCard> {
   Widget build(BuildContext context) {
     return Container(
       // * Bordes de la tarjeta
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black12),
           borderRadius: BorderRadius.zero),
@@ -86,7 +99,8 @@ class _SalesCardState extends State<SalesCard> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        ' ' + sale.getTotalWithTax(),
+                        ' ' +
+                            (useTax ? sale.getTotalWithTax() : sale.getTotal()),
                         style: const TextStyle(fontSize: 16),
                         textAlign: TextAlign.start,
                         softWrap: true,
@@ -103,7 +117,9 @@ class _SalesCardState extends State<SalesCard> {
                     Container(
                       alignment: Alignment.center,
                       child: Text(
-                        'Realizado el ' + sale.getDateFormatted(),
+                        showUser == true
+                            ? ('Realizado por ' + sale.getUserName())
+                            : ('Realizado el ' + sale.getDateFormatted()),
                         style: const TextStyle(fontSize: 13),
                         textAlign: TextAlign.start,
                         softWrap: true,

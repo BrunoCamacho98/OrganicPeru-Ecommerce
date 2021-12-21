@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:organic/models/creditcard.dart';
 import 'package:organic/models/detail_sale.dart';
+import 'package:organic/models/user.dart';
 
 class Sale {
   String? id;
@@ -17,6 +18,7 @@ class Sale {
   late double total;
   late String email;
   List<DetailSale>? detailSaleList;
+  UserLogin? user;
 
   DocumentReference? reference;
 
@@ -34,6 +36,7 @@ class Sale {
       required this.total,
       required this.email,
       this.detailSaleList,
+      this.user,
       this.reference});
 
   factory Sale.fromSnapshot(QueryDocumentSnapshot snapshot) {
@@ -72,6 +75,10 @@ class Sale {
 
   getDate() {
     return DateTime.parse(dateSale);
+  }
+
+  getUserName() {
+    return user!.getName();
   }
 
   getDateFormatted() {

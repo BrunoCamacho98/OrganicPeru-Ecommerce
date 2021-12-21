@@ -245,7 +245,7 @@ class _ModalSalesState extends State<ModalSales> {
                         max: double.parse(producto.getWeight()),
                         value: double.parse(_cantidadController.text),
                         decimals: 1,
-                        step: 0.5,
+                        step: 1,
                         onChanged: (value) => {setCantidadCompra(value)},
                       )
                     ],

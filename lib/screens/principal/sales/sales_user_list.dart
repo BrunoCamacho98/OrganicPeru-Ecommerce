@@ -31,13 +31,33 @@ class _SalesUserListState extends State<SalesUserList> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(20),
       child: Column(
-        children: saleList.isNotEmpty
-            ? saleList.map((sale) {
-                return SalesCard(sale: sale);
-              }).toList()
-            : [const Text('No tiene compras')],
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Mis compras",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: saleList.isNotEmpty
+                ? saleList.map((sale) {
+                    return SalesCard(
+                      sale: sale,
+                      showUser: false,
+                      useTax: true,
+                    );
+                  }).toList()
+                : [const Text('No tiene compras')],
+          ),
+        ],
       ),
     );
   }

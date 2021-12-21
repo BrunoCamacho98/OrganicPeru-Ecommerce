@@ -8,6 +8,7 @@ import 'package:organic/screens/principal/sales/modal_detail_sales.dart';
 import 'package:organic/screens/principal/sales/my_sales.dart';
 import 'package:organic/screens/principal/sales/sales_user_list.dart';
 import 'package:organic/screens/principal/user/profile.dart';
+import 'package:organic/screens/principal/user/user_manage.dart';
 import 'package:organic/services/authentification/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:organic/util/queries/sales/sales_query.dart';
@@ -80,6 +81,8 @@ class PrincipalState extends State<Principal> {
         return ConfirmSale(confirm: _onSelectItem);
       case 8:
         return const MySales();
+      case 9:
+        return const UserManage();
     }
   }
 
@@ -234,7 +237,7 @@ class PrincipalState extends State<Principal> {
                           color: 2 == _selectDrawerItem
                               ? kPrimaryColor
                               : Colors.black87)),
-                  leading: Icon(Icons.production_quantity_limits_rounded,
+                  leading: Icon(Icons.breakfast_dining,
                       color: 2 == _selectDrawerItem
                           ? kPrimaryColor
                           : Colors.black54),
@@ -276,9 +279,12 @@ class PrincipalState extends State<Principal> {
                   onTap: () {
                     _onSelectItem(4, null);
                   }),
-          const Divider(
-            thickness: 0.9,
-          ),
+
+          user == null || user?.type == 'VISITOR'
+              ? const SizedBox()
+              : const Divider(
+                  thickness: 0.9,
+                ),
 
           user == null || user?.type == 'VISITOR'
               ? const SizedBox()
@@ -288,7 +294,7 @@ class PrincipalState extends State<Principal> {
                           color: 8 == _selectDrawerItem
                               ? kPrimaryColor
                               : Colors.black87)),
-                  leading: Icon(Icons.production_quantity_limits_rounded,
+                  leading: Icon(Icons.money,
                       color: 8 == _selectDrawerItem
                           ? kPrimaryColor
                           : Colors.black54),
@@ -296,6 +302,24 @@ class PrincipalState extends State<Principal> {
                   onTap: () {
                     _onSelectItem(8, null);
                   }),
+
+          user == null || user?.type == 'VISITOR'
+              ? const SizedBox()
+              : ListTile(
+                  title: Text('Usuarios',
+                      style: TextStyle(
+                          color: 9 == _selectDrawerItem
+                              ? kPrimaryColor
+                              : Colors.black87)),
+                  leading: Icon(Icons.group,
+                      color: 9 == _selectDrawerItem
+                          ? kPrimaryColor
+                          : Colors.black54),
+                  selected: (9 == _selectDrawerItem),
+                  onTap: () {
+                    _onSelectItem(9, null);
+                  }),
+
           const Divider(
             thickness: 0.9,
           ),

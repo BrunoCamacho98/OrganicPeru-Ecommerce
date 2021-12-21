@@ -86,4 +86,42 @@ class UserQuery with ChangeNotifier {
 
     return user;
   }
+
+  Future<UserLogin> getUserById(String userId) async {
+    final CollectionReference userReference =
+        FirebaseFirestore.instance.collection("Users");
+
+    UserLogin user = UserLogin();
+
+    QuerySnapshot users =
+        await userReference.where('id', isEqualTo: userId).get();
+
+    if (users.docs.isNotEmpty) {
+      for (var doc in users.docs) {
+        user = UserLogin.fromSnapshot(doc);
+      }
+    }
+
+    return user;
+  }
+
+  Future<List<UserLogin>> getUserCustomers() async {
+    final CollectionReference userReference =
+        FirebaseFirestore.instance.collection("Users");
+
+    List<UserLogin> userList = [];
+
+    QuerySnapshot users =
+        await userReference.where('type', isEqualTo: 'CUSTOMER').get();
+
+    if (users.docs.isNotEmpty) {
+      for (var doc in users.docs) {
+        UserLogin user = UserLogin.fromSnapshot(doc);
+
+        userList.add(user);
+      }
+    }
+
+    return userList;
+  }
 }

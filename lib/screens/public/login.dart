@@ -12,6 +12,8 @@ import 'package:organic/constants/theme.dart';
 import 'package:organic/constants/globals.dart' as global;
 // * MODEL
 import 'package:organic/models/user.dart';
+// Toast
+// import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
   final Function toggleScreen;
@@ -131,6 +133,14 @@ class _LoginState extends State<Login> {
                             'email');
 
                         if (user?.id != null) {
+                          // Fluttertoast.showToast(
+                          //     msg: "Iniciando sesión",
+                          //     toastLength: Toast.LENGTH_SHORT,
+                          //     gravity: ToastGravity.CENTER,
+                          //     timeInSecForIosWeb: 1,
+                          //     backgroundColor: Colors.green,
+                          //     textColor: Colors.white,
+                          //     fontSize: 16.0);
                           clearAll();
                           global.isLogged = true;
                           toPrincipal(context, user);
